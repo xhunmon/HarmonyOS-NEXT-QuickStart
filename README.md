@@ -23,7 +23,16 @@ This is a developer-oriented HarmonyOS NEXT application from 0 to 1 rapid develo
 
 ### Quickly get on the app store
 
-- In progress...
+- [Complete Guide to Developer Qualification and Account Registration](QuickAGC/001/index.md)
+- [Application Compliance and Privacy Policy Explained](QuickAGC/002/index.md)
+- [Complete Guide to Domain Registration and Network Compliance](QuickAGC/003/index.md)
+- [Multi-Device Adaptation and Responsive Design Best Practices](QuickAGC/004/index.md)
+- [Complete Guide to Functional Testing and Real Device Debugging](QuickAGC/005/index.md)
+- [Detailed Guide to Packaging and Signing Process](QuickAGC/006/index.md)
+- [Complete Guide to Obtaining and Configuring Signing Files](QuickAGC/007/index.md)
+- [Complete Guide to Creating an App in AppGallery Connect](QuickAGC/008/index.md)
+- [Complete Guide to Uploading Packages and Qualification Materials](QuickAGC/009/index.md)
+- [Complete Guide to Review, Release, and Common Issues](QuickAGC/010/index.md)
 
 ## 🏆 Features
 
