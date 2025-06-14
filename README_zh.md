@@ -34,6 +34,16 @@
 - [上传包体与资质材料全流程指南](QuickAGC/009/index_zh.md)
 - [审核发布与常见问题全流程解析](QuickAGC/010/index_zh.md)
 
+### 我的开源项目
+
+#### AttributeStyle
+
+- [第1篇：AttributeStyle核心技术解析：基于HarmonyOS NEXT的UI样式复用方案](SourceOpen/AttributeStyle/001/index_zh.md)
+- [第2篇：AttributeStyle样式组合机制：构建灵活可复用的UI样式系统](SourceOpen/AttributeStyle/002/index_zh.md)
+- [第3篇：AttributeStyle状态管理系统：构建响应式UI交互体验](SourceOpen/AttributeStyle/003/index_zh.md)
+- [第4篇：AttributeStyle自定义适配器开发指南：从理论到实践](SourceOpen/AttributeStyle/004/index_zh.md)
+- [第5篇：AttributeStyle性能优化与基准测试：高效UI渲染的实现之道](SourceOpen/AttributeStyle/005/index_zh.md)
+
 ## 🏆 核心特性
 
 - **双语支持**：所有文章均提供中英双语版本

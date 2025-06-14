@@ -34,6 +34,16 @@ This is a developer-oriented HarmonyOS NEXT application from 0 to 1 rapid develo
 - [Complete Guide to Uploading Packages and Qualification Materials](QuickAGC/009/index.md)
 - [Complete Guide to Review, Release, and Common Issues](QuickAGC/010/index.md)
 
+### My Open Source Projects
+
+#### AttributeStyle
+
+- [Chapter 1: AttributeStyle Core Technology Analysis: UI Style Reuse Solution Based on HarmonyOS NEXT](SourceOpen/AttributeStyle/001/index.md)
+- [Chapter 2: AttributeStyle Style Composition Mechanism: Building a Flexible and Reusable UI Style System](SourceOpen/AttributeStyle/002/index.md)
+- [Chapter 3: AttributeStyle State Management System: Building a Responsive UI Interaction Experience](SourceOpen/AttributeStyle/003/index.md)
+- [Chapter 4: AttributeStyle Custom Adapter Development Guide: From Theory to Practice](SourceOpen/AttributeStyle/004/index.md)
+- [Chapter 5: AttributeStyle Performance Optimization and Benchmarking: Achieving Efficient UI Rendering](SourceOpen/AttributeStyle/005/index.md)
+
 ## 🏆 Features
 
 - **Bilingual**: All articles are available in both Chinese and English.
