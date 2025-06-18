@@ -44,6 +44,16 @@ This is a developer-oriented HarmonyOS NEXT application from 0 to 1 rapid develo
 - [Chapter 4: AttributeStyle Custom Adapter Development Guide: From Theory to Practice](SourceOpen/AttributeStyle/004/index.md)
 - [Chapter 5: AttributeStyle Performance Optimization and Benchmarking: Achieving Efficient UI Rendering](SourceOpen/AttributeStyle/005/index.md)
 
+### Quick Learn Series
+
+1. [DevEco Studio User Guide](QuickLearn/001/index.md)
+2. [Nearly 200 Development Cases](QuickLearn/002/index.md)
+3. [Third-Party Open Source Libraries](QuickLearn/003/index.md)
+4. [Problem-Solving Solutions](QuickLearn/004/index.md)
+5. [Multi-Device Adaptation (Phone, iPad, PC, Foldable)](QuickLearn/005/index.md)
+6. [Developer Classroom](QuickLearn/006/index.md)
+7. [Developer Certification](QuickLearn/007/index.md)
+
 ## 🏆 Features
 
 - **Bilingual**: All articles are available in both Chinese and English.
@@ -53,7 +63,7 @@ This is a developer-oriented HarmonyOS NEXT application from 0 to 1 rapid develo
 ## 🚀 Quick Start
 
 1. Clone this repository.
-2. Browse articles in the `article/` directory.
+2. Browse articles in the `/` directory.
 3. View images and code samples directly in each article folder.
 
 

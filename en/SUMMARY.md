@@ -26,6 +26,15 @@
 * [Complete Guide to Uploading Packages and Qualification Materials](../QuickAGC/009/index.md)
 * [Complete Guide to Review, Release, and Common Issues](../QuickAGC/010/index.md)
 
+## Quick Learn Series
+* [DevEco Studio User Guide](../QuickLearn/001/index.md)
+* [Nearly 200 Development Cases](../QuickLearn/002/index.md)
+* [Third-Party Open Source Libraries](../QuickLearn/003/index.md)
+* [Problem-Solving Solutions](../QuickLearn/004/index.md)
+* [Multi-Device Adaptation (Phone, iPad, PC, Foldable)](../QuickLearn/005/index.md)
+* [Developer Classroom](../QuickLearn/006/index.md)
+* [Developer Certification](../QuickLearn/007/index.md)
+
 ## My Open Source Projects
 ### AttributeStyle
 * [Chapter 1: AttributeStyle Core Technology Analysis](../SourceOpen/AttributeStyle/001/index.md)

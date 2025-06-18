@@ -26,6 +26,15 @@
 * [上传包体与资质材料全流程指南](../QuickAGC/009/index_zh.md)
 * [审核发布与常见问题全流程解析](../QuickAGC/010/index_zh.md)
 
+## 快速学习系列
+* [第1篇：DevEco Studio 的使用指南](../QuickLearn/001/index_zh.md)
+* [第2篇：近200个开发的案例](../QuickLearn/002/index_zh.md)
+* [第3篇：第三方开源库](../QuickLearn/003/index_zh.md)
+* [第4篇：查找问题的方案](../QuickLearn/004/index_zh.md)
+* [第5篇：手机、iPad、PC和折叠多端适配](../QuickLearn/005/index_zh.md)
+* [第6篇：开发者课堂](../QuickLearn/006/index_zh.md)
+* [第7篇：开发者认证](../QuickLearn/007/index_zh.md)
+
 ## 我的开源项目
 ### AttributeStyle
 * [第1篇：AttributeStyle核心技术解析](../SourceOpen/AttributeStyle/001/index_zh.md)
