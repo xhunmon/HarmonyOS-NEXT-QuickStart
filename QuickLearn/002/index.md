@@ -1,4 +1,4 @@
-# Nearly 200 Development Cases
+# HarmonyOS Learning: Nearly 200 Development Cases
 
 ## Introduction
 In the process of HarmonyOS application development, referring to practical cases is an important way to improve development efficiency and solve problems. Huawei officially provides a project containing nearly 200 development cases, covering various aspects such as common component implementation, function development, and performance optimization, providing valuable practical references for developers.
@@ -31,7 +31,3 @@ The HarmonyOS case project is a comprehensive open-source project that brings to
 
 ## Summary and Outlook
 Nearly 200 development cases provide rich practical resources for HarmonyOS developers, effectively reducing development thresholds. With the continuous development of the HarmonyOS ecosystem, the case library will continue to expand and improve. Developers should make full use of these cases, combine with actual project needs, and improve development capabilities and product quality.
-
-## References
-- HarmonyOS Case Project: https://gitee.com/harmonyos-cases/cases
-- HarmonyOS Official Documentation: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides

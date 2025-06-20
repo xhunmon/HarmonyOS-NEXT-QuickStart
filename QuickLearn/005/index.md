@@ -1,4 +1,4 @@
-# Multi-device Adaptation for Phones, iPads, PCs, and Foldables
+# HarmonyOS Learning: Multi-device Adaptation for Phones, iPads, PCs, and Foldables
 
 ## Introduction
 With the continuous expansion of the HarmonyOS ecosystem, applications need to adapt to multiple device forms such as phones, tablets, PCs, and foldable screens. Multi-device adaptation is crucial for improving user experience and represents the core manifestation of HarmonyOS's distributed capabilities. This article will detail official adaptation solutions and practical techniques to help developers build consistent application experiences across devices.
@@ -76,6 +76,5 @@ Multi-device adaptation is one of the core challenges in HarmonyOS application d
 
 ## References
 - Multi-device Development Guide: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/page-development
-- ArkUI Layout Documentation: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkui-layout-0000001500067585
-- Device Information API: https://developer.huawei.com/consumer/cn/doc/harmonyos-references/device-0000001524358685
-- Foldable Screen Development Guide: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/foldable-application-development
+- ArkUI Layout Documentation: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/layout-intro
+- Foldable Screen Development Guide: https://developer.huawei.com/consumer/cn/doc/best-practices/bpta-foldable-guide

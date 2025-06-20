@@ -1,4 +1,4 @@
-# Problem Finding Solutions
+# HarmonyOS Learning: Problem Finding Solutions
 
 ## Introduction
 Encountering technical issues is common during HarmonyOS application development. Efficient problem finding and solving capabilities are crucial for improving development efficiency. Huawei officially provides multiple problem-solving channels, including precise search tools, official support services, and AI assistants, helping developers quickly locate and resolve issues.
@@ -34,9 +34,3 @@ Huawei Developer Official Search: https://developer.huawei.com/consumer/cn/doc/s
 
 ## Summary and Outlook
 Efficient problem-solving ability is one of the core competencies of developers. The search tools, technical support, and AI assistants provided by Huawei form a complete problem-solving ecosystem. With the development of HarmonyOS, problem-solving channels will become more intelligent (e.g., precise recommendations based on developers' historical issues). Developers should continuously optimize problem location methods to improve development fluency.
-
-## References
-- Huawei Developer Search: https://developer.huawei.com/consumer/cn/doc/search?type=all
-- Huawei Developer Forum: https://developer.huawei.com/consumer/cn/forum/block/HarmonyOS
-- Official AI Xiaoyi: https://xiaoyi.huawei.com/chat/
-- Issue Submission Portal: https://developer.huawei.com/consumer/cn/support

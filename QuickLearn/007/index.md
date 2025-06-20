@@ -1,4 +1,4 @@
-# Developer Certification
+# HarmonyOS Learning: Developer Certification
 
 ## Introduction
 HarmonyOS Developer Certification is a technical capability evaluation system officially launched by Huawei, aiming to verify developers' professional level in the field of HarmonyOS application development. Obtaining certification not only provides authoritative skill endorsement but also enhances career competitiveness and connects to more business opportunities. This article will detail the certification system, exam content, and preparation strategies to help developers efficiently plan their certification path.
@@ -84,10 +84,3 @@ Taking intermediate certification as an example, the exam focuses on the followi
 
 ## Summary and Outlook
 HarmonyOS Developer Certification is not only a proof of technical capabilities but also a "passport" to enter the HarmonyOS ecosystem. As the ecosystem expands, certification certificates will become important references for enterprise recruitment and project cooperation. In the future, the certification system may expand to more fields such as IoT and vehicle infotainment, forming more细分能力评估维度. Developers should choose appropriate certification levels based on career planning, improve skills through systematic learning and practice, and seize development opportunities in the HarmonyOS ecosystem.
-
-## References
-- Huawei Developer Certification Homepage: https://developer.huawei.com/consumer/cn/training/certifications/harmonyos
-- Certification Exam Outline: https://developer.huawei.com/consumer/cn/doc/certification-guides/harmonyos-application-developer-certification-0000001524530061
-- Exam Registration Entrance: https://developer.huawei.com/consumer/cn/training/exam
-- Certification Training Courses: https://developer.huawei.com/consumer/cn/training/course/certification
-- Certificate Query System: https://developer.huawei.com/consumer/cn/training/certquery

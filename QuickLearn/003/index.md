@@ -1,4 +1,4 @@
-# Third-Party Open Source Libraries
+# HarmonyOS Learning: Third-Party Open Source Libraries
 
 ## Introduction
 In HarmonyOS application development, rational use of third-party open source libraries can significantly improve development efficiency and reduce repetitive work. OpenHarmony Package Manager (OHPM), as the official package management tool, provides developers with rich third-party library resources covering various functional modules from UI components to business logic processing.
@@ -37,8 +37,3 @@ OHPM is an important part of the OpenHarmony ecosystem, with main functions incl
 
 ## Summary and Outlook
 Third-party open source libraries are key supports for the prosperity of the HarmonyOS ecosystem, and OHPM has greatly simplified library management processes. In the future, with ecosystem maturity, the quantity and quality of open source libraries will continue to improve. Developers should make good use of these resources while actively participating in community contributions to collectively enhance HarmonyOS development efficiency.
-
-## References
-- OHPM Official Repository: https://ohpm.openharmony.cn/#/cn/home
-- OHPM Usage Guide: https://gitee.com/openharmony-tpc/docs/blob/master/ohpm/usage.md
-- HarmonyOS Third-Party Library Development Specifications: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkui-x-third-party-lib-dev
