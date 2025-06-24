@@ -42,3 +42,8 @@
 * [第3篇：AttributeStyle状态管理系统](../SourceOpen/AttributeStyle/003/index_zh.md)
 * [第4篇：AttributeStyle自定义适配器开发指南](../SourceOpen/AttributeStyle/004/index_zh.md)
 * [第5篇：AttributeStyle性能优化与基准测试](../SourceOpen/AttributeStyle/005/index_zh.md)
+
+### HintDialog
+* [第1篇：HintDialog核心功能解析](../SourceOpen/HintDialog/001/index_zh.md)
+* [第2篇：HintDialog自定义样式指南](../SourceOpen/HintDialog/002/index_zh.md)
+* [第3篇：HintDialog高级应用场景](../SourceOpen/HintDialog/003/index_zh.md)

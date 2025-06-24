@@ -42,3 +42,8 @@
 * [Chapter 3: AttributeStyle State Management System](../SourceOpen/AttributeStyle/003/index.md)
 * [Chapter 4: AttributeStyle Custom Adapter Development Guide](../SourceOpen/AttributeStyle/004/index.md)
 * [Chapter 5: AttributeStyle Performance Optimization and Benchmarking](../SourceOpen/AttributeStyle/005/index.md)
+
+### HintDialog
+* [Chapter 1: HintDialog Core Function Analysis](../SourceOpen/HintDialog/001/index.md)
+* [Chapter 2: HintDialog Custom Style Guide](../SourceOpen/HintDialog/002/index.md)
+* [Chapter 3: HintDialog Advanced Application Scenarios](../SourceOpen/HintDialog/003/index.md)

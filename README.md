@@ -44,6 +44,12 @@ This is a developer-oriented HarmonyOS NEXT application from 0 to 1 rapid develo
 - [Chapter 4: AttributeStyle Custom Adapter Development Guide: From Theory to Practice](SourceOpen/AttributeStyle/004/index.md)
 - [Chapter 5: AttributeStyle Performance Optimization and Benchmarking: Achieving Efficient UI Rendering](SourceOpen/AttributeStyle/005/index.md)
 
+#### HintDialog
+
+- [Chapter 1: HintDialog Core Function Analysis](SourceOpen/HintDialog/001/index.md)
+- [Chapter 2: HintDialog Custom Style Guide](SourceOpen/HintDialog/002/index.md)
+- [Chapter 3: HintDialog Advanced Application Scenarios](SourceOpen/HintDialog/003/index.md)
+
 ### Quick Learn Series
 
 1. [DevEco Studio User Guide](QuickLearn/001/index.md)
