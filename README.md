@@ -20,6 +20,11 @@ This is a developer-oriented HarmonyOS NEXT application from 0 to 1 rapid develo
 8. [Common Utility Tools (Part 2)](QuickApp/008/index.md)
 9. [Custom Swipeable Calendar Component](QuickApp/009/index.md)
 10. [Migrating State Management from V1 to V2](QuickApp/010/index.md)
+11. [Network Request Framework Design and Implementation](QuickApp/011/index.md)
+12. [Network Download Function Implementation and Optimization](QuickApp/012/index.md)
+13. [Loading Component Basic Implementation and Usage](QuickApp/013/index.md)
+14. [Loading Component Advanced Customization and Best Practices](QuickApp/014/index.md)
+15. [Privacy Agreement Checkbox Component Design and Implementation](QuickApp/015/index.md)
 
 ### Quickly get on the app store
 
