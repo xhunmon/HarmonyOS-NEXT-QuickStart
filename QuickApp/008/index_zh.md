@@ -47,6 +47,172 @@
 - 结束写入：`wavWriter.writeFinish()`
 - 相关API：[文件操作](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/core-file-kit-intro)
 
+```ts
+/*
+ * @Desc: 
+ * @Author: qincji
+ * @Date: 2024/5/4
+ */
+import fs from '@ohos.file.fs';
+import { buffer } from '@kit.ArkTS';
+import { Log } from 'common_utils';
+
+export namespace wav {
+  export class Header {
+    mChunkID: string = "RIFF";
+    mChunkSize: number = 0;
+    mFormat: string = "WAVE";
+    mSubChunk1ID: string = "fmt ";
+    mSubChunk1Size: number = 16;
+    mAudioFormat: number = 1; //short
+    mNumChannel: number = 1; //short
+    mSampleRate: number = 8000;
+    mByteRate: number = 0; //
+    mBlockAlign: number = 0; //short
+    mBitsPerSample: number = 8; //short
+
+    mSubChunk2ID: string = "data";
+    mSubChunk2Size: number = 0;
+
+    constructor(sampleRateInHz: number, channels: number, bitsPerSample: number) {
+      this.mSampleRate = sampleRateInHz;
+      this.mBitsPerSample = bitsPerSample;
+      this.mNumChannel = channels;
+      this.mByteRate = this.mSampleRate * this.mNumChannel * this.mBitsPerSample / 8;
+      this.mBlockAlign = (this.mNumChannel * this.mBitsPerSample / 8);
+    }
+  }
+
+  function deleteIfExit(path: string) {
+    if (fs.accessSync(path)) {
+      fs.unlinkSync(path)
+    }
+  }
+
+
+  class Options {
+    offset?: number;
+    length?: number;
+  }
+
+  const MAX_COPY_LEN: number = 1024 * 10;
+  const TAG = 'WavUtil';
+
+  function offset(offset: number, length: number): Options {
+    return {
+      offset: offset,
+      length: length
+    }
+  }
+
+  export class Writer {
+    private header: Header;
+    private tempPath: string;
+    private filePath: string;
+    private temp: fs.File;
+    private file: fs.File;
+    private dataLength: number = 0;
+
+    constructor(folder: string, filepath: string, sampleRateInHz: number, channels: number, bitsPerSample: number) {
+      this.header = new Header(sampleRateInHz, channels, bitsPerSample);
+      this.tempPath = folder + '/temp.wav';
+      this.filePath = filepath;
+      deleteIfExit(filepath);
+      deleteIfExit(this.tempPath);
+      this.file = fs.openSync(filepath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+      this.temp = fs.openSync(this.tempPath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+    }
+
+    
+    public getDuration(): number {
+      return Number((this.dataLength * 1000 / this.header.mByteRate).toFixed(0));
+    }
+
+    
+    public creatNewFile(filepath: string) {
+      deleteIfExit(this.filePath);
+      this.filePath = filepath;
+      this.file = fs.openSync(filepath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
+    }
+
+    public clearCache() {
+      fs.closeSync(this.temp.fd);
+      fs.closeSync(this.file.fd);
+      deleteIfExit(this.filePath);
+      deleteIfExit(this.tempPath);
+    }
+
+    public writeData(buffer: ArrayBuffer) {
+      fs.writeSync(this.temp.fd, buffer, {
+        offset: this.dataLength,
+        length: buffer.byteLength
+      });
+      this.dataLength += buffer.byteLength;
+      // Log.d(TAG, () => 'dataLength： ' + this.dataLength);
+    }
+
+    
+    public writeFinish(clearEndSecond: number = 0) {
+      Log.d(TAG, () => 'writeFinish dataLength： ' + this.dataLength);
+      // this.dataLength = this.dataLength - clearEndSecond * this.header.mByteRate;
+      this.writeHeader();
+      const HEADER_SIZE: number = 44;
+      let bufferSize: number = HEADER_SIZE; //这是写入头部后的大小
+      let buffer: ArrayBuffer = new ArrayBuffer(MAX_COPY_LEN);
+      let curSize = fs.readSync(this.temp.fd, buffer);
+      while (curSize > 0) {
+        fs.writeSync(this.file.fd, buffer, {
+          offset: bufferSize,
+          length: curSize
+        });
+        bufferSize += curSize;
+        if (curSize < MAX_COPY_LEN || bufferSize - HEADER_SIZE >= this.dataLength) { 
+          break;
+        }
+        curSize = fs.readSync(this.temp.fd, buffer);
+      }
+
+      fs.closeSync(this.temp.fd);
+      fs.closeSync(this.file.fd);
+      fs.unlinkSync(this.tempPath);
+
+      Log.d(TAG, () => 'finish...');
+    }
+
+    private writeHeader() {
+      fs.writeSync(this.file.fd, buffer.from(this.header.mChunkID).buffer, offset(0, 4));
+      const fileSize = fs.statSync(this.temp.fd).size;
+      const fileSizeArray = [(fileSize - 8) & 0xff, ((fileSize - 8) >> 8) & 0xff,
+        ((fileSize - 8) >> 16) & 0xff, ((fileSize - 8) >> 24) & 0xff];
+      fs.writeSync(this.file.fd, buffer.from(fileSizeArray).buffer, offset(4, 4));
+      fs.writeSync(this.file.fd, buffer.from(this.header.mFormat).buffer, offset(8, 4));
+      fs.writeSync(this.file.fd, buffer.from(this.header.mSubChunk1ID).buffer, offset(12, 4));
+      const subChunkArray: number[] = [16, 0, 0, 0];
+      fs.writeSync(this.file.fd, buffer.from(subChunkArray).buffer, offset(16, 4));
+      const audioFormatArray: number[] = [1, 0];
+      fs.writeSync(this.file.fd, buffer.from(audioFormatArray).buffer, offset(20, 2));
+      const channelArray: number[] = [this.header.mNumChannel, 0];
+      fs.writeSync(this.file.fd, buffer.from(channelArray).buffer, offset(22, 2));
+      const sampleR = this.header.mSampleRate;
+      const sampleRateArray = [sampleR & 0xff, (sampleR >> 8) & 0xff, (sampleR >> 16) & 0xff, (sampleR >> 24) & 0xff];
+      fs.writeSync(this.file.fd, buffer.from(sampleRateArray).buffer, offset(24, 4));
+      const bitRate = this.header.mByteRate;
+      const bitRateArray = [bitRate & 0xff, (bitRate >> 8) & 0xff, (bitRate >> 16) & 0xff, (bitRate >> 24) & 0xff];
+      fs.writeSync(this.file.fd, buffer.from(bitRateArray).buffer, offset(28, 4));
+      const blockArray = [this.header.mBlockAlign, 0];
+      fs.writeSync(this.file.fd, buffer.from(blockArray).buffer, offset(32, 2));
+      const bitPerRateArray = [this.header.mBitsPerSample, 0];
+      fs.writeSync(this.file.fd, buffer.from(bitPerRateArray).buffer, offset(34, 2));
+      fs.writeSync(this.file.fd, buffer.from(this.header.mSubChunk2ID).buffer, offset(36, 4));
+      const dataSize = this.dataLength;
+      const dataSizeArray = [dataSize & 0xff, (dataSize >> 8) & 0xff, (dataSize >> 16) & 0xff, (dataSize >> 24) & 0xff];
+      fs.writeSync(this.file.fd, buffer.from(dataSizeArray).buffer, offset(40, 4));
+    }
+  }
+}
+
+```
+
 ## 七、最佳实践与官方文档
 
 - 工具类建议单一职责、接口简洁，便于复用和维护。

@@ -32,11 +32,75 @@ export class V2Info {
 
 // Listen in page/component
 @ComponentV2
-struct HomePage {
-    @Local info: V2Info = V2Info.connect();
-    ...
-}
+export struct Header {
+  @Param @Require title: string | Resource;
+  @Event onKeyBack?: () => void; 
+  @BuilderParam rightLayout?: () => void;
+  @Param titleBarHeight: Length = $r('app.float.height_title_bar'); 
+  @Param titleSize: number | string | Resource = $r('app.float.font_title'); 
+  @Param titleAttrModifier: AttributeModifier<TextAttribute> = {};
+  @Param bgColor: ResourceColor = $r('app.color.title_bar');
+  @Local info: V2Info = V2Info.connect();
 
+  build() {
+    Stack() {
+      RelativeContainer() {
+        Text(this.title)
+          .fontSize(this.titleSize)
+          .width('50%')
+          .height('100%')
+          .fontColor($r('app.color.title'))
+          .fontWeight(FontWeight.Medium)
+          .ellipsisMode(EllipsisMode.END)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .maxLines(1)
+          .textAlign(TextAlign.Center)
+          .alignRules({
+            middle: { anchor: "__container__", align: HorizontalAlign.Center },
+          })
+          .id("i1")
+          .attributeModifier(this.titleAttrModifier)
+
+        if (this.onKeyBack) {
+          Image($r('app.media.ic_back'))
+            .height('100%')
+            .padding({
+              left: $r('app.float.margin_left_right'),
+              top: 11,
+              bottom: 11,
+              right: 11
+            })
+            .fillColor($r('app.color.title'))
+            .objectFit(ImageFit.Contain)
+            .alignRules({
+              left: { anchor: "__container__", align: HorizontalAlign.Start },
+            })
+            .id("i2")
+            .onClick(() => {
+              this.onKeyBack?.()
+            })
+        }
+        if (this.rightLayout) {
+          Row() {
+            this.rightLayout?.()
+          }
+          .height('100%')
+          .justifyContent(FlexAlign.End)
+          .alignRules({
+            right: { anchor: "__container__", align: HorizontalAlign.End },
+          })
+          .id("i3")
+        }
+      }
+      .width('100%')
+      .height(this.titleBarHeight)
+    }
+    .width('100%')
+    .padding({ top: this.info.statusHeight })
+    .backgroundColor(this.bgColor)
+
+  }
+}
 // Assign globally and auto-notify
 V2Info.connect().isLogin = true;
 ```
