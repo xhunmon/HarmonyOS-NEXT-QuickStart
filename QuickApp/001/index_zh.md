@@ -43,6 +43,53 @@
 - build-profile.json5：应用级配置信息，包括签名、产品配置等
 - hvigorfile.ts：应用级编译构建任务脚本
 
+```ts
+//demo Index.ets
+import { BusinessError } from '@kit.BasicServicesKit';
+
+
+@Entry
+@Component
+struct Index {
+  @State message: string = 'Hello World';
+
+
+  build() {
+    Row() {
+      Column() {
+        Text(this.message)
+          .fontSize(50)
+          .fontWeight(FontWeight.Bold)
+        Button() {
+          Text('Next')
+            .fontSize(30)
+            .fontWeight(FontWeight.Bold)
+        }
+        .type(ButtonType.Capsule)
+        .margin({
+          top: 20
+        })
+        .backgroundColor('#0D9FFB')
+        .width('40%')
+        .height('5%')
+        .onClick(() => {
+          console.info(`Succeeded in clicking the 'Next' button.`)
+          let uiContext: UIContext = this.getUIContext();
+          let router = uiContext.getRouter();
+          router.pushUrl({ url: 'pages/Second' }).then(() => {
+            console.info('Succeeded in jumping to the second page.')
+          }).catch((err: BusinessError) => {
+            console.error(`Failed to jump to the second page. Code is ${err.code}, message is ${err.message}`)
+          })
+        })
+      }
+      .width('100%')
+    }
+    .height('100%')
+  }
+}
+```
+
 开发小贴士：
 - 在DevEco Studio编辑窗口右上角点击Previewer可预览页面，Ctrl+S可实时刷新。
 - 页面跳转推荐使用[Navigation](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V5/arkts-navigation-navigation-V5)而非传统router。

@@ -19,7 +19,7 @@
 3. **案例库与论坛补充**：复杂场景问题可参考官方案例库（https://gitee.com/harmonyos-cases/cases）或开发者论坛（https://developer.huawei.com/consumer/cn/forum/block/harmonyos-next）的经验分享。
 4. **官方技术支持**：若以上途径未解决，可通过“提单”功能（需登录开发者账号）向华为技术团队提交问题，通常1-3个工作日内响应。
 
-### 官方AI助手“小艺”的使用技巧
+### 官方AI助手“小艺”和CodeGenie的使用技巧
 1. **精准提问**：包含技术场景（如“ArkUI-X跨端适配”）、具体问题（如“List组件滑动卡顿”）及已尝试方案，提高回答针对性。
 2. **代码辅助**：可直接粘贴报错信息或代码片段，小艺会分析语法错误并提供修改建议。
 3. **文档解读**：请求对官方文档中的复杂概念进行通俗解释（如“请用实例说明@Builder装饰器的用法”）。
@@ -34,3 +34,86 @@
 
 ## 总结与展望
 高效的问题解决能力是开发者的核心竞争力之一。华为官方提供的搜索工具、技术支持与AI助手构成了完整的问题解决生态。随着HarmonyOS生态的发展，问题解决渠道将更加智能化（如基于开发者历史问题的精准推荐），开发者应持续优化问题定位方法，提升开发流畅度。
+
+## CodeGenie案例
+**问：如何动态计算 Text 的长度？**
+
+答：
+
+在鸿蒙ArkUI中动态计算Text组件长度，可通过以下方案实现：
+
+### 一、核心计算方法
+1. **使用measureText接口**  
+   通过`@kit.ArkUI.component.measure`模块的`measureText`方法获取文本实际尺寸[webpage13]：
+```typescript
+import measure from '@kit.ArkUI.component.measure';
+
+// 测量文本宽度（单位px）
+const textWidth = measure.measureText({
+  textContent: "测试文本",
+  fontSize: 20,
+  fontWeight: FontWeight.Normal
+});
+```
+
+2. **单位转换技巧**  
+   - 将像素转换为虚拟像素单位`vp`：  
+     ```typescript
+     import { px2vp } from '@kit.ArkUI.component';
+
+     const vpWidth = px2vp(textWidth);
+     ```
+   - 使用`fp`单位适配系统字体缩放[webpage15]
+
+**二、动态适配场景实现**
+1. **结合屏幕尺寸计算**  
+   获取屏幕宽度后计算可用空间：
+```typescript
+import display from '@kit.ArkUI.component';
+
+const screenWidth = display.getAllDisplays().then(displays => {
+  return displays.width; // 获取屏幕像素宽度
+});
+```
+
+2. **容器约束处理**  
+   当父容器使用`layoutWeight`时，需配合`constraintSize`限制尺寸[webpage3][webpage8]：
+```typescript
+Text('长文本内容')
+  .constraintSize({ maxWidth: '70%' })
+  .layoutWeight(1)
+```
+
+**三、进阶应用方案**
+1. **动态调整文本显示**  
+   结合测量结果实现截断逻辑：
+```typescript
+@State textContent: string = "";
+@State displayText: string = "";
+
+// 计算并截断文本
+function truncateText() {
+  const maxWidth = 200; // 最大允许宽度(px)
+  const measuredWidth = measure.measureText({
+    textContent: this.textContent,
+    fontSize: 16
+  });
+  
+  if (measuredWidth > maxWidth) {
+    this.displayText = this.textContent.slice(0, -3) + '...';
+  } else {
+    this.displayText = this.textContent;
+  }
+}
+```
+
+2. **性能优化建议**  
+   - 对高频变化的文本内容进行防抖处理[webpage1]
+   - 缓存已计算过的文本尺寸[webpage13]
+
+### 四、注意事项
+1. 测量结果包含字体样式影响（粗体/斜体会增加实际宽度）[webpage13]
+2. 中英文混排时需考虑字符宽度差异[webpage12]
+3. `measureText`需在组件渲染完成后调用（推荐在`onAppear`生命周期）[webpage1]
+
+通过上述方案可实现文本长度的精准计算与动态适配，满足不同屏幕尺寸下的布局需求。实际开发中建议结合`TextOverflow.Ellipsis`等属性优化显示效果[webpage5][webpage12]。

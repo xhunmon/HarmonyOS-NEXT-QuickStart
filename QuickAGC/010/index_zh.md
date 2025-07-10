@@ -30,11 +30,130 @@
 
 - **隐私政策缺失或内容不符**：未上传或内容与实际功能不符。
 - **权限说明不清晰**：权限弹窗未明确说明用途。
+```typescript
+//检查该文件，并且查看 AGC 是否申请一些额外的危险权限
+"requestPermissions": [
+      {
+        "name": "ohos.permission.INTERNET"
+      },
+      {
+        "name": "ohos.permission.GET_NETWORK_INFO"
+      },
+      {
+        "name": "ohos.permission.KEEP_BACKGROUND_RUNNING",
+        "reason": "$string:permission_audio_record_background",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "always"
+        }
+      },
+      {
+        "name": "ohos.permission.MICROPHONE",
+        "reason": "$string:permission_audio_record",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      },
+      {
+        "name": "ohos.permission.STORE_PERSISTENT_DATA",
+        "reason": "$string:permission_read_image",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      },
+      {
+        "name": "ohos.permission.CAMERA",
+        "reason": "$string:permission_phone",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      }
+    ]
+```
+
 - **应用闪退、卡顿或功能异常**：基础功能不稳定。
 - **资质材料不全或不清晰**：如软著证书、隐私政策、截图等不合规。
 - **包名、签名、版本号不一致**：与AGC信息不符。
 
-## 四、问题应对策略
+```typescript
+//配置应用信息app.json5：
+{
+  "app": {
+    "bundleName": "com.xxx.xxx",
+    "vendor": "demo",
+    "versionCode": 1010000,
+    "versionName": "1.1.0",
+    "icon": "$media:app_icon",
+    "label": "$string:app_name"
+  }
+}
+
+//build-profile.json5
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "storeFile": "xxx.p12",
+          "storePassword": "xxx",
+          "keyAlias": "xxx",
+          "keyPassword": "xxx",
+          "signAlg": "SHA256withECDSA",
+          "profile": "xxx.p7b",
+          "certpath": "xxx.cer"
+        }
+      },
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "useNormalizedOHMUrl": true
+          }
+        }
+      },
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+  ]
+}
+```
 
 - **认真阅读驳回原因**：根据平台反馈逐条排查和修正。
 - **补充和完善材料**：确保所有必需材料真实、清晰、合规。

@@ -20,6 +20,14 @@
    - **百分比单位**：使用%或vp（虚拟像素）作为尺寸单位，自动适配不同分辨率
 
 2. **设备信息获取**
+
+```typescript
+import { deviceInfo } from '@kit.BasicServicesKit';
+const deviceType = deviceInfo.deviceType; // 'phone' | 'tablet' | '2in1'
+const screenWidth = deviceInfo.screenWidth;
+const screenHeight = deviceInfo.screenHeight;
+console.log(`设备类型: ${deviceType}, 屏幕尺寸: ${screenWidth}x${screenHeight}`);
+```
 ```typescript
 import { deviceInfo } from '@kit.BasicServicesKit';
 const deviceType = deviceInfo.deviceType; // 'phone' | 'tablet' | '2in1'
@@ -38,6 +46,27 @@ if (deviceType === 'tablet') {
 ```
 
 4. **折叠屏适配**
+
+```typescript
+import { display } from '@kit.ArkUI';
+// 监听折叠状态变化
+display.on('foldStatusChange', (data) => {
+  console.log(`折叠状态变化: ${data.status}`);
+  if (data.status === 'unfolded') {
+    // 展开状态下显示多列布局
+    this.columnCount = 3;
+    this.updateLayout(); // 触发UI更新
+  } else if (data.status === 'folded') {
+    // 折叠状态下显示单列布局
+    this.columnCount = 1;
+    this.updateLayout();
+  }
+});
+
+// 获取当前折叠状态
+const currentStatus = display.getFoldStatus();
+console.log(`当前折叠状态: ${currentStatus}`);
+```
 针对折叠状态变化的处理：
 ```typescript
 import { display } from '@kit.ArkUI';

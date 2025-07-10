@@ -6,6 +6,120 @@
 
 > 前提是已经您已[注册华为开发者账号](https://developer.huawei.com/consumer/cn/doc/start/registration-and-verification-0000001053628148)、[实名认证](https://developer.huawei.com/consumer/cn/doc/start/itrna-0000001076878172)、[创建项目](https://developer.huawei.com/consumer/cn/doc/app/agc-help-createproject-0000001100334664)。
 
+### 创建HarmonyOS工程
+
+配置应用信息app.json5：
+```typescript
+{
+  "app": {
+    "bundleName": "com.xxx.xxx",
+    "vendor": "demo",
+    "versionCode": 1010000,
+    "versionName": "1.1.0",
+    "icon": "$media:app_icon",
+    "label": "$string:app_name"
+  }
+}
+```
+
+配置module.json5：
+```typescript
+{
+  "module": {
+    "name": "entry",
+    "type": "entry",
+    "description": "$string:main_desc",
+    "mainElement": "EntryAbility",
+    "deviceTypes": [
+      "phone",
+      "tablet",
+      "2in1"
+    ],
+    "srcEntry": "./ets/stage/AppStage.ets",
+    "deliveryWithInstall": true,
+    "installationFree": false,
+    "pages": "$profile:main_pages",
+    "routerMap": "$profile:route_map",
+    "abilities": [
+      {
+        "name": "EntryAbility",
+        "srcEntry": "./ets/ability/EntryAbility.ets",
+        "description": "$string:entry_desc",
+        "icon": "$media:app_icon",
+        "label": "$string:ability_label",
+        "startWindowIcon": "$media:app_icon",
+        "startWindowBackground": "$color:start_window_background",
+        "exported": true,
+        "skills": [
+          {
+            "entities": [
+              "entity.system.home"
+            ],
+            "actions": [
+              "action.system.home"
+            ]
+          }
+        ],
+        "backgroundModes": [
+          // 长时任务类型的配置项
+          "audioRecording",
+          "audioPlayback"
+        ]
+      }
+    ],
+    "requestPermissions": [
+      {
+        "name": "ohos.permission.INTERNET"
+      },
+      {
+        "name": "ohos.permission.GET_NETWORK_INFO"
+      },
+      {
+        "name": "ohos.permission.KEEP_BACKGROUND_RUNNING",
+        "reason": "$string:permission_audio_record_background",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "always"
+        }
+      },
+      {
+        "name": "ohos.permission.MICROPHONE",
+        "reason": "$string:permission_audio_record",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      },
+      {
+        "name": "ohos.permission.STORE_PERSISTENT_DATA",
+        "reason": "$string:permission_read_image",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      },
+      {
+        "name": "ohos.permission.CAMERA",
+        "reason": "$string:permission_phone",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      }
+    ]
+  }
+}
+```
+
+
 1. **登录AppGallery Connect**
    - 访问[AppGallery Connect](https://developer.huawei.com/consumer/cn/service/josp/agc/index.html)，使用开发者账号登录。
 

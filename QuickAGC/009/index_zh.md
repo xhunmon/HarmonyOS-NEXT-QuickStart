@@ -2,7 +2,122 @@
 
 在AppGallery Connect（AGC）平台成功创建应用后，开发者需要上传应用安装包（.app文件）和相关资质材料。规范、完整地上传包体和材料，是应用顺利通过审核、成功上架的关键。本文将详细介绍包体上传流程、资质材料准备、常见问题及官方参考资源，帮助开发者高效完成上架准备。
 
-## 一、[包体上传流程](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-publish-app#section97874500234)
+## 一、包体准备与签名
+
+### Hvigor打包文件
+hvigor-config.json5文件整体的结构如下：
+```bash
+modelVersion
+dependencies
+execution
+└── analyze
+└── daemon
+└── incremental
+└── parallel
+└── typeCheck
+└── optimizationStrategy
+logging
+└── level
+debugging
+└── stacktrace
+nodeOptions
+└── maxOldSpaceSize
+└── maxSemiSpaceSize
+└── exposeGC
+javaOptions
+└── Xmx
+properties
+└── hvigor.cacheDir
+└── ohos.buildDir
+└── enableSignTask
+└── ohos.arkCompile.maxSize
+└── hvigor.pool.cache.capacity
+└── hvigor.pool.maxSize
+└── ohos.pack.compressLevel
+└── hvigor.analyzeHtml
+└── hvigor.dependency.useNpm
+└── ohos.compile.lib.entryfile
+└── ohos.align.target
+└── ohos.fallback.target
+└── ohos.arkCompile.sourceMapDir
+└── ohos.collect.debugSymbol
+└── hvigor.enableMemoryCache
+└── hvigor.memoryThreshold
+└── ohos.nativeResolver
+└── ohos.arkCompile.noEmitJs
+└── ohos.arkCompile.singleFileEmit
+└── ohos.sign.har
+└── hvigor.keepDependency
+└── ohos.arkCompile.emptyBundleName
+└── ohos.uiTransform.Optimization
+└── ohos.har.excludeHspDependencies
+└── ohos.processLib.optimization
+└── ohos.obfuscationRules.optimization
+└── hvigor.incremental.optimization
+└── hvigor.task.schedule.optimization
+└── ohos.byteCodeHar.integratedOptimization
+└── ohos.rollupCache.usePathPlaceholder
+└── ohos.rollupCache.useSourceHash
+```
+
+### 签名配置检查
+在`build-profile.json5`中验证签名配置：
+```json
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "storeFile": "xxx.p12",
+          "storePassword": "xxx",
+          "keyAlias": "xxx",
+          "keyPassword": "xxx",
+          "signAlg": "SHA256withECDSA",
+          "profile": "xxx.p7b",
+          "certpath": "xxx.cer"
+        }
+      },
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "useNormalizedOHMUrl": true
+          }
+        }
+      },
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+  ]
+}
+```
+
 
 1. **生成签名安装包**
    - 在DevEco Studio中完成打包与签名，生成`.app`格式的安装包。

@@ -43,6 +43,55 @@ It is recommended to use the Stage model, which is the official application arch
 - build-profile.json5: Application-level configuration (signing, product info, etc.)
 - hvigorfile.ts: Application-level build script
 
+
+```ts
+//demo Index.ets
+import { BusinessError } from '@kit.BasicServicesKit';
+
+
+@Entry
+@Component
+struct Index {
+  @State message: string = 'Hello World';
+
+
+  build() {
+    Row() {
+      Column() {
+        Text(this.message)
+          .fontSize(50)
+          .fontWeight(FontWeight.Bold)
+        Button() {
+          Text('Next')
+            .fontSize(30)
+            .fontWeight(FontWeight.Bold)
+        }
+        .type(ButtonType.Capsule)
+        .margin({
+          top: 20
+        })
+        .backgroundColor('#0D9FFB')
+        .width('40%')
+        .height('5%')
+        .onClick(() => {
+          console.info(`Succeeded in clicking the 'Next' button.`)
+          let uiContext: UIContext = this.getUIContext();
+          let router = uiContext.getRouter();
+          router.pushUrl({ url: 'pages/Second' }).then(() => {
+            console.info('Succeeded in jumping to the second page.')
+          }).catch((err: BusinessError) => {
+            console.error(`Failed to jump to the second page. Code is ${err.code}, message is ${err.message}`)
+          })
+        })
+      }
+      .width('100%')
+    }
+    .height('100%')
+  }
+}
+```
+
+
 **Development Tips:**
 - In DevEco Studio, click the Previewer in the top-right toolbar to preview your page. Use Ctrl+S to refresh in real time.
 - For page navigation, use [Navigation](https://developer.huawei.com/consumer/en/doc/harmonyos-guides-V5/arkts-navigation-navigation-V5) instead of the traditional router.

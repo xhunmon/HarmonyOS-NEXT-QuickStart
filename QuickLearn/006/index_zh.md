@@ -51,3 +51,88 @@
 
 ## 总结与展望
 开发者课堂作为HarmonyOS生态的重要教育资源，为开发者提供了标准化、高效率的学习渠道。随着HarmonyOS的快速迭代，开发者课堂将持续扩充课程内容，引入AI个性化推荐、虚拟实验环境等创新学习方式。开发者应充分利用这一平台，构建系统化知识体系，在实践中不断提升技术能力，为HarmonyOS生态贡献力量。
+
+## 案例——ArkTS基础语法
+
+以下是ArkTS基础语法的核心案例代码，涵盖变量声明、自定义组件和事件处理等关键知识点：
+
+### 1. 变量声明与类型推断
+```typescript
+// 显式类型声明
+let message: string = 'Hello HarmonyOS';
+const version: number = 4.0;
+
+// 自动类型推断（推荐）
+let appName = 'MyApp'; // 自动推断为string类型
+const maxCount = 100; // 自动推断为number类型
+```
+
+### 2. 自定义组件与UI描述
+```typescript
+@Entry
+@Component
+struct BasicComponent {
+  // 状态变量：值变化时自动刷新UI
+  @State count: number = 0;
+
+  build() {
+    Column() {
+      // 文本组件
+      Text('ArkTS基础语法示例')
+        .fontSize(20)
+        .fontWeight(FontWeight.Bold)
+
+      // 按钮组件与事件处理
+      Button('点击计数: ' + this.count)
+        .onClick(() => {
+          this.count++;
+        })
+        .margin(10)
+        .width(200)
+
+      // 分隔线组件
+      Divider()
+        .height(2)
+        .color('#eeeeee')
+
+      // 条件渲染
+      if (this.count > 3) {
+        Text('计数超过3次啦!')
+          .fontColor(Color.Red)
+      }
+    }
+    .width('100%')
+    .padding(20)
+  }
+}
+```
+
+### 3. 事件处理与状态管理
+```typescript
+@Component
+struct EventHandlingExample {
+  @State inputText: string = '';
+
+  // 自定义函数
+  private handleInputChange(value: string) {
+    this.inputText = value;
+  }
+
+  build() {
+    Column() {
+      TextInput({
+        placeholder: '请输入文本'
+      })
+      .onChange(this.handleInputChange)
+      .width(300)
+      .margin(10)
+
+      Text('你输入的是: ' + this.inputText)
+        .fontSize(16)
+    }
+    .padding(20)
+  }
+}
+```
+
+> 完整教程参考：https://developer.huawei.com/consumer/cn/training/course/slightMooc/C101717496870909384

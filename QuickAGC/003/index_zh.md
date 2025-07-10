@@ -2,7 +2,83 @@
 
 在HarmonyOS Next应用上架过程中，如果你的应用涉及网络服务（如API、云存储、用户注册登录等），就必须完成域名注册和ICP备案。本文将详细介绍域名备案的流程、合规要求、常见问题及官方参考资源，帮助开发者顺利通过网络合规审核。
 
-## 一、什么情况下需要域名备案？
+## 一、域名备案的必要性
+
+### HTTPS配置示例
+在Nginx服务器中配置HTTPS以确保域名安全通信：
+```nginx
+server {
+  listen 443 ssl;
+  server_name repo.example.com;  # 替换为备案后的域名
+
+  ssl_certificate /path/to/ssl/server.crt;  # SSL证书路径
+  ssl_certificate_key /path/to/ssl/server.key;  # 私钥路径
+
+  # 安全Headers
+  add_header Content-Security-Policy "default-src 'self'";
+  add_header X-Content-Type-Options nosniff;
+
+  location / {
+    proxy_pass http://127.0.0.1:8088;  # 转发到应用服务
+  }
+}
+```
+
+### axios框架进行网络请求
+在应用中使用axios进行接口请求的伪代码：
+```typescript
+axios.create({
+      baseURL: API.base_url,
+      timeout: 5000,
+      connectTimeout: 60000,
+      headers: {}
+    }).post<string, AxiosResponse<MagicResp<T>>, D>(url, data)
+      .then((response: AxiosResponse<MagicResp<T>>) => {
+        Log.d(TAG, () => `[响应][${url}]: ${StringUtil.toStr(response.data)}`);
+        if (callback === undefined) {
+          return;
+        }
+        if (response.status !== 200) {
+          NetRequest.dealError<T>(response.status, response.statusText, callback);
+          return;
+        }
+
+        const magic: MagicResp<T> = response.data;
+        if (magic.code !== MagicResp.SUCCESS_CODE) {
+          NetRequest.dealError<T>(magic.code, magic.message, callback);
+          return;
+        }
+        NetRequest.dealSuccess(magic, callback);
+      })
+      .catch((error: Error) => {
+        Log.e(TAG, () =>  `[异常][${url}]: ${StringUtil.toStr(error)}`);
+        const obj: Record<string, string> = JSON.parse(error.message) as Record<string, string>;
+        if (obj && obj['code'] !== undefined) {
+          NetRequest.dealError<T>(Number(obj['code']), obj['message'], callback);
+          return;
+        }
+        NetRequest.dealError<T>(-1, error.message, callback);
+      })
+      .finally(() => {
+        if (callback && callback.onFinally) {
+          callback.onFinally();
+        }
+      });
+```
+
+### 网络权限声明
+在`module.json5`中声明必要的网络权限：
+```json
+"requestPermissions": [
+  {
+    "name": "ohos.permission.INTERNET"
+  },
+  {
+    "name": "ohos.permission.GET_NETWORK_INFO"
+  }
+]
+```
+
 
 - 只要应用涉及网络服务（如访问服务器、云API、推送、数据同步等），都需要使用已备案的域名。
 - 单机本地应用（完全不联网）可无需备案。
@@ -40,7 +116,6 @@
 ## 五、官方参考链接
 
 - [华为云ICP备案服务](https://support.huaweicloud.com/icp/)
-- [工信部ICP备案管理系统](https://beian.miit.gov.cn/)
 - [华为开发者联盟账号中心](https://developer.huawei.com/consumer/cn/)
 - [HarmonyOS Next官方文档](https://developer.huawei.com/consumer/cn/doc/)
 

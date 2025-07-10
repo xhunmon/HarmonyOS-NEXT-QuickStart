@@ -19,8 +19,114 @@
    - 重点测试用户登录、数据同步、支付、消息推送等核心流程。
 
 3. **UI自动化测试**
-   - 利用自动化工具（如UIAutomator、DevEco Studio自带测试工具）批量测试界面交互。
    - 检查界面适配、交互逻辑、动画流畅性等。
+   - 应用UI测试（基于python）,编写测试脚本：
+```python
+@原子用例
+设置界面浏览
+@预置条件
+无
+@用例步骤
+1.冷启动设置
+2.上滑1次浏览界面
+3.下滑1次浏览界面
+4.点击蓝牙
+5.侧滑返回
+6.再次点击蓝牙
+7.侧滑返回
+8.点击显示和亮度
+9.侧滑返回
+10.上滑返回桌面
+APP_NAME = "设置"
+class SettingInterfaceBrowering(ModelBase):  # 原子用例统一继承ModelBase
+
+
+    def __init__(self, uidriver: IDriverPerf, case_id):  # 进行初始化操作
+        ModelBase.__init__(self, uidriver, case_id)  # 调用父类初始化方法
+        self.scene_no = "SettingInterfaceBrowering"  # 原子用例id
+        self.scene_name = "设置界面浏览"  # 原子用例名字
+        self.scene_type = "系统设置场景"  # 原子用例类型
+        self.scene_path = "日常高频操作-基础操作场景-系统通用操作场景-系统设置场景"  # 原子用例所属路径
+        self.set_model_pkg("com.huawei.hmos.settings") # 设置当前原子用例测试应用的包名
+        self.driver = uidriver
+
+
+    def setup(self):  # 原子用例预置动作
+        # 停止指定的应用
+        self.driver.stop_app('com.huawei.hmos.settings')
+        # 返回手机桌面主页
+        self.driver.go_home()
+
+
+    @ModelBase.scene_recover   # 此修饰器为必带
+    def execute(self):
+        # 1.冷启动设置
+        # find_app_in_launcher 从主页开始滑动查找对应APP名的应用，应用需要在桌面上可见，返回的是（x，y）坐标值元组
+        icon_pos = self.driver.find_app_in_launcher(APP_NAME)
+
+
+        # 创建性能场景Tag, 使用继承ModelBase的方法create_tag，设置step_name步骤描述，step_type对应性能tag类型
+        Tag = self.create_tag(step_name="冷启动设置", scene_type=SceneType.COLD_START)
+
+
+        # touch_perf 模拟手指点击
+        self.driver.touch_perf(icon_pos, tag=Tag)
+
+
+        # 等待指定时间，等待界面稳定，再进行下一步操作
+        self.driver.wait(1)
+
+
+        # 2.上滑1次浏览界面
+        # swipe_perf 在屏幕上或者指定区域area中执行朝向指定方向direction的滑动操作
+        self.driver.swipe_perf(UiParam.UP,
+                               tag=self.create_tag("上滑1次浏览界面", SceneType.NO_PAGE_SWITCH))
+        # 3.下滑1次浏览界面
+        self.driver.swipe_perf(UiParam.DOWN,
+                               tag=self.create_tag("下滑1次浏览界面", SceneType.NO_PAGE_SWITCH))
+
+
+        # 4.点击蓝牙
+        # 使用find_component查找控件，返回的是一个UiComponent类型的值（控件文本为蓝牙）
+        com = self.driver.find_component(BY.text('蓝牙'))
+        # 可将UiComponent类型传入touch_perf，会自动识别并转换为坐标点击
+        self.driver.touch_perf(com, tag=self.create_tag("点击蓝牙", SceneType.WITH_PAGE_SWITCH))
+
+
+        # 5.侧滑返回
+        # swipe_to_back_perf 滑动屏幕右侧返回
+        self.driver.swipe_to_back_perf(tag=self.create_tag("侧滑返回", SceneType.WITH_PAGE_SWITCH))
+
+
+        # 6.再次点击蓝牙
+        # 返回所有符合条件的控件，返回值是多个UiComponent类型的值组成的列表，也可添加参数index=0，返回第一个控件
+        coms = self.driver.find_all_components(BY.text('蓝牙'))
+        self.driver.touch_perf(coms[0], tag=self.create_tag("再次点击蓝牙", SceneType.WITH_PAGE_SWITCH))
+
+
+        # 7.侧滑返回
+        self.driver.swipe_to_back_perf(tag=self.create_tag("侧滑返回", SceneType.WITH_PAGE_SWITCH))
+
+
+        # 8.点击显示和亮度
+        # 可将BY类型传入touch_perf，会自动查找指定条件的控件，并转换为坐标点击
+        self.driver.touch_perf(BY.text('显示和亮度'),
+                               tag=self.create_tag("点击显示和亮度", SceneType.WITH_PAGE_SWITCH))
+
+
+        # 9.侧滑返回
+        self.driver.swipe_to_back_perf(tag=self.create_tag("侧滑返回", SceneType.WITH_PAGE_SWITCH))
+
+
+        # 10.上滑返回桌面
+        # swipe_to_home_perf 从屏幕底部上滑返回桌面
+        self.driver.swipe_to_home_perf(tag=self.create_tag("上滑返回桌面", SceneType.WITH_PAGE_SWITCH))
+
+
+    def teardown(self):
+        # 原子用例结束清理步骤
+        pass
+```
 
 4. **性能测试**
    - 检查应用在不同设备上的启动速度、内存占用、CPU消耗等。

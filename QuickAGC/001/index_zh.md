@@ -2,7 +2,100 @@
 
 在正式开发和上架HarmonyOS Next应用之前，开发者首先需要具备合法的开发者资质，并完成华为开发者账号的注册与实名认证。本文将详细介绍注册流程、注意事项、常见问题及实用资源，帮助你顺利迈出上架之路的第一步。
 
-## 一、为什么需要开发者资质？
+## 一、开发者账号注册与资质认证
+
+### AGC项目配置文件（华为登录）
+创建应用后从AGC控制台拿到配置参数：https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/account-client-id
+```json
+"module": {
+  "name": "<name>",
+  "type": "entry",
+  "description": "<description>",
+  "mainElement": "<mainElement>",
+  "deviceTypes": [],
+  "pages": "<pages>",
+  "abilities": [],
+  "metadata": [ // 配置信息如下
+    {
+      "name": "client_id",
+      "value": "<上一步获取的Client ID>"
+    }
+  ]
+ }
+```
+
+### 然后可以接入登录
+```json
+//https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/account-phone-unionid-login
+  getQuickLoginAnonymousPhone() {
+    // 创建授权请求，并设置参数
+    const authRequest = new authentication.HuaweiIDProvider().createAuthorizationWithHuaweiIDRequest();
+    // 获取匿名手机号需传quickLoginAnonymousPhone这个scope，传参之前需要先申请“华为账号一键登录”权限，否则会返回1001502014错误码
+    authRequest.scopes = ['quickLoginAnonymousPhone'];
+    // 用于防跨站点请求伪造
+    authRequest.state = util.generateRandomUUID();
+    // 一键登录场景该参数必须设置为false
+    authRequest.forceAuthorization = false;
+    const controller = new authentication.AuthenticationController();
+    try {
+      controller.executeRequest(authRequest).then((response: authentication.AuthorizationWithHuaweiIDResponse) => {
+        // 获取到匿名手机号
+        const anonymousPhone = response.data?.extraInfo?.quickLoginAnonymousPhone as string;
+        if (anonymousPhone) {
+          hilog.info(0x0000, 'testTag', 'Succeeded in authentication.');
+          const quickLoginAnonymousPhone: string = anonymousPhone;
+          return;
+        }
+        hilog.info(0x0000, 'testTag', 'Succeeded in authentication. AnonymousPhone is empty.');
+        // 未获取到匿名手机号，应用需要跳转到其他方式登录页面
+      }).catch((error: BusinessError) => {
+        this.dealAllError(error);
+      })
+    } catch (error) {
+      this.dealAllError(error);
+    }
+  }
+
+
+  // 错误处理
+  dealAllError(error: BusinessError): void {
+    hilog.error(0x0000, 'testTag',
+      `Failed to get quickLoginAnonymousPhone, errorCode is ${error.code}, errorMessage is ${error.message}`);
+    // 在应用登录涉及UI交互场景下，建议按照如下错误码指导提示用户
+    if (error.code === ErrorCode.ERROR_CODE_LOGIN_OUT) {
+      // 华为账号未登录。应用需要展示其他登录方式
+    } else if (error.code === ErrorCode.ERROR_CODE_NETWORK_ERROR) {
+      // 网络异常，请检查当前网络状态并重试或展示其他登录方式
+    } else if (error.code === ErrorCode.ERROR_CODE_INTERNAL_ERROR) {
+      // 登录失败，应用需要展示其他登录方式
+    } else if (error.code === ErrorCode.ERROR_CODE_USER_CANCEL) {
+      // 用户取消授权
+    } else if (error.code === ErrorCode.ERROR_CODE_SYSTEM_SERVICE) {
+      // 系统服务异常，应用需要展示其他登录方式
+    } else if (error.code === ErrorCode.ERROR_CODE_REQUEST_REFUSE) {
+      // 重复请求，应用无需处理
+    } else {
+      // 应用登录失败，应用需要展示其他登录方式
+    }
+  }
+
+
+  export enum ErrorCode {
+    // 账号未登录
+    ERROR_CODE_LOGIN_OUT = 1001502001,
+    // 网络错误
+    ERROR_CODE_NETWORK_ERROR = 1001502005,
+    // 内部错误
+    ERROR_CODE_INTERNAL_ERROR = 1001502009,
+    // 用户取消授权
+    ERROR_CODE_USER_CANCEL = 1001502012,
+    // 系统服务异常
+    ERROR_CODE_SYSTEM_SERVICE = 12300001,
+    // 重复请求
+    ERROR_CODE_REQUEST_REFUSE = 1001500002
+  }
+  ...
+```
 
 开发者资质是指开发者在华为官方平台注册并通过实名认证后，获得的合法开发和发布应用的资格。无论是个人还是企业，只有具备开发者资质，才能在[AppGallery Connect（AGC）](https://developer.huawei.com/consumer/cn/service/josp/agc/index.html#/)平台上架和管理应用。
 

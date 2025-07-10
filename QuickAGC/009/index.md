@@ -1,56 +1,177 @@
-# Complete Guide to Uploading Packages and Qualification Materials
+# Uploading Application Packages and Qualification Materials for HarmonyOS Next
 
-After successfully creating an app in AppGallery Connect (AGC), developers need to upload the app package (.app file) and related qualification materials. Proper and complete uploads are key to passing review and publishing. This article details the package upload process, qualification material preparation, common issues, and official resources to help developers efficiently prepare for publishing.
+After successfully creating an application on AppGallery Connect (AGC), developers need to upload the application installation package (.app file) and relevant qualification materials. Standardized and complete uploads are crucial for smooth review and successful publication. This guide details the package upload process, qualification material preparation, common issues, and official resources to help developers efficiently complete publication preparations.
 
-## 1. [Package Upload Process](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-publish-app#section97874500234)
+## 1. Package Preparation and Signing
 
-1. **Generate Signed Package**
-   - Use DevEco Studio to package and sign, generating a `.app` file.
-   - Check the signature, package name, version, etc., to ensure they match AGC info.
+### Hvigor Packaging File
+The structure of the `hvigor-config.json5` file is as follows:
+```bash
+modelVersion
+dependencies
+execution
+└── analyze
+└── daemon
+└── incremental
+└── parallel
+└── typeCheck
+└── optimizationStrategy
+logging
+└── level
+debugging
+└── stacktrace
+nodeOptions
+└── maxOldSpaceSize
+└── maxSemiSpaceSize
+└── exposeGC
+javaOptions
+└── Xmx
+properties
+└── hvigor.cacheDir
+└── ohos.buildDir
+└── enableSignTask
+└── ohos.arkCompile.maxSize
+└── hvigor.pool.cache.capacity
+└── hvigor.pool.maxSize
+└── ohos.pack.compressLevel
+└── hvigor.analyzeHtml
+└── hvigor.dependency.useNpm
+└── ohos.compile.lib.entryfile
+└── ohos.align.target
+└── ohos.fallback.target
+└── ohos.arkCompile.sourceMapDir
+└── ohos.collect.debugSymbol
+└── hvigor.enableMemoryCache
+└── hvigor.memoryThreshold
+└── ohos.nativeResolver
+└── ohos.arkCompile.noEmitJs
+└── ohos.arkCompile.singleFileEmit
+└── ohos.sign.har
+└── hvigor.keepDependency
+└── ohos.arkCompile.emptyBundleName
+└── ohos.uiTransform.Optimization
+└── ohos.har.excludeHspDependencies
+└── ohos.processLib.optimization
+└── ohos.obfuscationRules.optimization
+└── hvigor.incremental.optimization
+└── hvigor.task.schedule.optimization
+└── ohos.byteCodeHar.integratedOptimization
+└── ohos.rollupCache.usePathPlaceholder
+└── ohos.rollupCache.useSourceHash
+```
+
+### Signing Configuration Verification
+Verify signing configuration in `build-profile.json5`:
+```json
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "storeFile": "xxx.p12",
+          "storePassword": "xxx",
+          "keyAlias": "xxx",
+          "keyPassword": "xxx",
+          "signAlg": "SHA256withECDSA",
+          "profile": "xxx.p7b",
+          "certpath": "xxx.cer"
+        }
+      },
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "useNormalizedOHMUrl": true
+          }
+        }
+      },
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+  ]
+}
+```
+
+1. **Generate Signed Installation Package**
+   - Complete packaging and signing in DevEco Studio to generate `.app` installation package
+   - Verify package signature, name, and version number match AGC application information
 
 2. **Log in to AppGallery Connect**
-   - Visit [AppGallery Connect](https://developer.huawei.com/consumer/cn/service/josp/agc/index.html) and go to "My Apps."
+   - Access AppGallery Connect → "My Apps"
 
-3. **Go to "Version Management"**
-   - Select the target app, click "Version Management" or "Version Info."
+3. **Navigate to "Version Management" Page**
+   - Select target application → Click "Version Management" or "Version Information"
 
-4. **Upload Package**
-   - Click "Upload Package," select the local `.app` file to upload.
-   - Fill in version number, update log, etc.
-   - The system will automatically check the package for signature, package name, permissions, and compliance issues.
+4. **Upload Installation Package**
+   - Click "Upload Installation Package" → Select local `.app` file
+   - Fill in version number, update logs, etc.
+   - System automatically performs package detection and flags compliance issues
 
 5. **Save and Submit for Review**
-   - After confirming all info, click "Save" and submit for review.
+   - Verify all information → Click "Save" → Submit for review
 
-## 2. [Qualification Material Preparation](https://developer.huawei.com/consumer/cn/doc/app/agc-help-harmonyos-releaseapp-0000001914554900#section12761327123615)
+## 2. Preparation of Qualification Materials
 
 1. **Software Copyright Certificate**
-   - Upload a scanned copy of the Software Copyright Certificate or Electronic Copyright Certificate; ensure info is clear and authentic.
-   - You can apply yourself (takes longer) or use a third-party service (about 300 RMB on Taobao).
+   - Upload scanned copy of "Software Copyright Registration Certificate" or "Electronic Copyright Certification"
+   - Can be self-processed (time-consuming) or through third-party services (≈300 RMB)
 
 2. **Privacy Policy Link**
-   - Provide a standalone privacy policy page link; content must match the app's actual features.
+   - Provide independent privacy policy page URL with content matching actual app functionality
 
-3. **App Screenshots**
-   - Upload high-quality screenshots showing core features; provide different sizes as required.
+3. **Application Screenshots**
+   - Upload high-quality screenshots showcasing core features in required dimensions
 
 4. **Other Materials**
-   - For special features (payment, maps, push, etc.), upload relevant qualification or authorization documents.
+   - For special features (payment, maps, push notifications), provide relevant authorization documents
 
-## 3. Common Issues and Tips
+## 3. Common Issues & Solutions
 
-- **Signature Mismatch**: If the package signature doesn't match the AGC certificate, review will fail; always check signature info.
-- **Incorrect Package Name or Version**: Must match AGC app info exactly.
-- **Incomplete or Unclear Materials**: Upload clear, authentic materials; missing or unclear docs will be rejected.
-- **Privacy Policy Mismatch**: Privacy policy must match the app's actual features and permissions.
-- **Missing Special Feature Qualifications**: Prepare relevant documents in advance for payment, maps, etc.
+| Issue | Solution |  
+|-------|----------|  
+| **Signature mismatch** | Verify signing configuration matches AGC certificate |  
+| **Incorrect package name/version** | Ensure exact match with AGC application information |  
+| **Incomplete/blurred materials** | Provide clear, authentic scanned documents |  
+| **Privacy policy inconsistency** | Align policy content with actual app functionality |  
+| **Missing special feature authorization** | Prepare relevant certificates in advance |  
 
-## 4. Official Reference Links
+## 4. Official References
 
-- [AppGallery Connect Package Upload & Review Guide](https://developer.huawei.com/consumer/cn/doc/app/agc-help-harmonyos-releaseapp-0000001914554900#section1754010232299)
-- [HarmonyOS Next Official Docs](https://developer.huawei.com/consumer/cn/doc/)
-- [Huawei Developer Alliance Account Center](https://developer.huawei.com/consumer/cn/)
+- AppGallery Connect Package Upload & Review Guide
+- HarmonyOS Next Documentation
+- Huawei Developer Alliance Account Center
 
-## 5. Summary
+## 5. Conclusion
 
-Uploading packages and qualification materials is a key step in the HarmonyOS Next app publishing process. Prepare all required materials in advance, strictly follow official requirements, and consult docs or the community if you have questions to ensure smooth review and successful publishing. 
+Uploading packages and qualification materials is critical for HarmonyOS Next app publication. Developers should:
+1. Prepare all required materials in advance
+2. Strictly follow official requirements during upload
+3. Consult documentation and communities for complex issues
+4. Double-check signatures and package information  
+   This ensures smooth review approval and successful app publication.

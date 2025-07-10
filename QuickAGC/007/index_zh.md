@@ -35,30 +35,81 @@
    
    - 在DevEco Studio项目的build-profile.json5文件中配置签名路径和密码（需要用IDE输入密码，参考准备签名文件）：
    
-   ```json
-   "app": {
-       "signingConfigs": [
-         {
-           "name": "default",
-           "type": "HarmonyOS",
-           "material": {
-             "storeFile": "doc/debug/debug.p12",
-             "storePassword": "xxxxxxxxxxxx",
-             "keyAlias": "debug",
-             "keyPassword": "xxxxxxxxxxxx",
-             "signAlg": "SHA256withECDSA",
-             "profile": "doc/debug/debug.p7b",
-             "certpath": "doc/debug/debug.cer"
-           }
-         }
+```json
+  {
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "storeFile": "xxx.p12",
+          "storePassword": "xxx",
+          "keyAlias": "xxx",
+          "keyPassword": "xxx",
+          "signAlg": "SHA256withECDSA",
+          "profile": "xxx.p7b",
+          "certpath": "xxx.cer"
+        }
+      },
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "useNormalizedOHMUrl": true
+          }
+        }
+      },
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
       ]
-   }
-   ```
+    },
+  ]
+}
+```
    
    - 确保签名文件路径和密码填写正确，避免打包失败。
    
 3. **Profile文件配置**
    - 在DevEco Studio的"项目设置"中，选择对应Profile文件，确保与应用包名、设备信息一致。
+
+```json
+//配置应用信息app.json5：
+{
+  "app": {
+    "bundleName": "com.xxx.xxx",
+    "vendor": "demo",
+    "versionCode": 1010000,
+    "versionName": "1.1.0",
+    "icon": "$media:app_icon",
+    "label": "$string:app_name"
+  }
+}
+```
+
 
 4. **打包验证**
    - 通过"Build > Build Release APP"生成安装包，检查签名信息是否正确。

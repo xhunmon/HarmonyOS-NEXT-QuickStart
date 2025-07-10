@@ -1,61 +1,104 @@
-# Complete Guide to Functional Testing and Real Device Debugging
+# Comprehensive Guide to Functional Testing and Real Device Debugging
 
-Before publishing a HarmonyOS Next app, comprehensive functional testing and real device debugging are crucial for quality assurance and passing review. This article details the testing process, real device debugging methods, common issues, and official resources to help developers efficiently identify and resolve problems.
+Before publishing your HarmonyOS Next application, thorough functional testing and real-device debugging are crucial for ensuring quality and passing review. This guide details the testing process, debugging methods, common issues, and official resources to help developers efficiently identify and resolve problems.
 
-## 1. The Importance of Functional Testing
+## 1. Importance of Functional Testing
+- Ensures app stability by preventing crashes and lag
+- Verifies core functionality (login, payment, permissions, etc.)
+- Meets platform review requirements and improves approval rates
 
-- Ensure app stability, avoid crashes, freezes, and other user experience issues.
-- Check if core features (login, payment, permission requests, etc.) work properly.
-- Meet platform review requirements and improve approval rate.
+## 2. Testing Process & Methods
+### 1. Unit Testing
+- Write test cases for each module to validate inputs/outputs and edge cases
+- Use HarmonyOS official testing framework
 
-## 2. Testing Process and Methods
+### 2. Integration Testing
+- Validate module interactions and simulate real workflows
+- Focus on core processes: user login, data sync, payments, push notifications
 
-1. **Unit Testing**
-   - Write unit test cases for each module to verify input/output and edge cases.
-   - Use HarmonyOS official testing frameworks.
+### 3. UI Automation Testing
+- Check UI adaptation, interaction logic, and animation fluency
+- Python-based UI test script example:
+```python
+@Atomic Use Case
+Setting Interface Browsing
+@Preconditions
+None
+@Steps
+1. Cold start Settings
+2. Swipe up once to browse
+3. Swipe down once to browse
+4. Click Bluetooth
+5. Swipe back
+6. Click Bluetooth again
+7. Swipe back
+8. Click Display & Brightness
+9. Swipe back
+10. Swipe up to return home
+APP_NAME = "Settings"
+class SettingInterfaceBrowsing(ModelBase):
 
-2. **Integration Testing**
-   - Check module collaboration, simulate real business flows.
-   - Focus on login, data sync, payment, push notifications, etc.
+    def __init__(self, uidriver: IDriverPerf, case_id):
+        ModelBase.__init__(self, uidriver, case_id)
+        self.scene_no = "SettingInterfaceBrowsing"
+        self.scene_name = "Setting Interface Browsing"
+        self.scene_type = "System Settings"
+        self.scene_path = "High-frequency Operations > Basic Operations > System Operations"
+        self.set_model_pkg("com.huawei.hmos.settings")
+        self.driver = uidriver
 
-3. **UI Automation Testing**
-   - Use automation tools (UIAutomator, DevEco Studio built-in tools) for batch UI interaction testing.
-   - Check UI adaptation, interaction logic, animation smoothness, etc.
+    def setup(self):
+        self.driver.stop_app('com.huawei.hmos.settings')
+        self.driver.go_home()
 
-4. **Performance Testing**
-   - Test app startup speed, memory usage, CPU consumption on different devices.
-   - Identify and optimize performance bottlenecks for better UX.
+    @ModelBase.scene_recover
+    def execute(self):
+        # 1. Cold start Settings
+        icon_pos = self.driver.find_app_in_launcher(APP_NAME)
+        Tag = self.create_tag(step_name="Cold Start Settings", scene_type=SceneType.COLD_START)
+        self.driver.touch_perf(icon_pos, tag=Tag)
+        self.driver.wait(1)
+        
+        # 2-10: Execute UI operations (swipes, clicks, navigation)
+        # ... (original logic preserved)
+```
 
-## 3. Real Device Debugging Practices
+### 4. Performance Testing
+- Measure launch speed, memory usage, and CPU consumption across devices
+- Identify and optimize performance bottlenecks
 
-1. **Connect Real Devices**
-   - Use USB or Wi-Fi to connect HarmonyOS devices to your development computer.
-   - Enable developer mode and USB debugging on the device.
-2. **DevEco Studio Deployment & Debugging**
-   - In DevEco Studio, select the target device, click "Run" or "Debug" to deploy the app.
-   - Use breakpoints, log output, etc., to troubleshoot and fix issues in real time.
-3. **Multi-Device, Multi-Scenario Testing**
-   - Test on devices with different models, resolutions, and OS versions to cover more scenarios.
-   - Focus on adaptation, permissions, network, and other error-prone areas.
-4. **Use Emulator Testing**
-   - If real devices are insufficient, use the IDE's emulator (supports phone, foldable, tablet, PC, etc.).
-   - Note: Mac Intel models do not support the emulator.
+## 3. Real-Device Debugging Practice
+1. **Connect Devices**
+   - Link HarmonyOS devices via USB/Wi-Fi
+   - Enable Developer Mode and USB Debugging on devices
+2. **DevEco Studio Deployment**
+   - Select target device → Click "Run" or "Debug"
+   - Use breakpoints and logs for real-time troubleshooting
+3. **Multi-Device Testing**
+   - Test across different models, resolutions, and OS versions
+   - Prioritize adaptation, permissions, and network scenarios
+4. **Emulator Usage**
+   - Use built-in emulators (phones, foldables, tablets, PCs) when physical devices are unavailable
+   - ⚠️ Note: Not supported on Intel-based Macs
 
-> **Tip**: After each feature iteration, run full regression tests to ensure new features don't break existing ones.
 
-## 4. Common Issues and Tips
+## 4. Common Issues & Solutions
+| Issue | Solution |  
+|-------|----------|  
+| App crashes/lag | Analyze logs → Optimize memory/performance |  
+| Permission failures | Verify declarations and dynamic request flow |  
+| UI adaptation errors | Test on multiple devices → Adjust layouts |  
+| Inadequate test coverage | Expand automated test cases |  
 
-- **App Crashes/Freezes**: Analyze logs to locate and fix memory/performance issues.
-- **Permission Request Issues**: Check permission declarations and dynamic requests; ensure features work after user grants permission.
-- **UI Adaptation Issues**: Test on multiple real devices and adjust layouts/resources as needed.
-- **Insufficient Test Coverage**: Add more automation test cases to improve efficiency and coverage.
+## 5. Official References
+- HarmonyOS Next Documentation
+- DevEco Studio Download
+- Huawei Developer Alliance
 
-## 5. Official Reference Links
-
-- [HarmonyOS Next Official Docs](https://developer.huawei.com/consumer/cn/doc/)
-- [DevEco Studio Download](https://developer.huawei.com/consumer/cn/deveco-studio/?ha_source=sousuo&ha_sourceId=89000251)
-- [Huawei Developer Alliance Account Center](https://developer.huawei.com/consumer/cn/)
-
-## 6. Summary
-
-Functional testing and real device debugging are essential before publishing a HarmonyOS Next app. Make a detailed test plan, combine automation and real device testing, and fix issues promptly to ensure a stable, efficient app. Consult official docs or the community for tough problems and keep improving product quality and user experience. 
+## 6. Conclusion
+Functional testing and real-device debugging are essential for HarmonyOS Next app publication. Developers should:
+1. Create detailed test plans
+2. Combine automation with physical device testing
+3. Continuously optimize based on results
+4. Consult official documentation and communities for complex issues  
+   This approach ensures stable, high-quality applications that deliver exceptional user experiences.

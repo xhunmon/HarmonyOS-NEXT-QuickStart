@@ -13,25 +13,62 @@ HarmonyOS Next应用在完成开发和测试后，需要进行打包和签名，
    
    - 在DevEco Studio项目的build-profile.json5文件中配置签名路径和密码（需要用IDE输入密码，参考准备签名文件）：
    
-   ```json
-   "app": {
-       "signingConfigs": [
-         {
-           "name": "default",
-           "type": "HarmonyOS",
-           "material": {
-             "storeFile": "doc/debug/debug.p12",
-             "storePassword": "xxxxxxxxxxxx",
-             "keyAlias": "debug",
-             "keyPassword": "xxxxxxxxxxxx",
-             "signAlg": "SHA256withECDSA",
-             "profile": "doc/debug/debug.p7b",
-             "certpath": "doc/debug/debug.cer"
-           }
-         }
+```json
+   {
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "storeFile": "xxx.p12",
+          "storePassword": "xxx",
+          "keyAlias": "xxx",
+          "keyPassword": "xxx",
+          "signAlg": "SHA256withECDSA",
+          "profile": "xxx.p7b",
+          "certpath": "xxx.cer"
+        }
+      },
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "useNormalizedOHMUrl": true
+          }
+        }
+      },
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
       ]
-   }
-   ```
+    },
+  ]
+}
+```
+
    - 确保签名文件路径和密码填写正确，避免打包失败。
    
 3. **生成发布包**
@@ -44,6 +81,20 @@ HarmonyOS Next应用在完成开发和测试后，需要进行打包和签名，
 - **证书申请**：登录AppGallery Connect，进入"我的证书"页面，按指引申请开发者证书（.p12）和Profile文件。
 - **证书管理**：妥善保存证书和密码，避免泄露。建议备份到安全位置。
 - **Profile文件更新**：如应用包名、设备信息变更，需重新生成Profile文件并更新到项目中。
+
+```json
+//配置应用信息app.json5：
+{
+  "app": {
+    "bundleName": "com.xxx.xxx",
+    "vendor": "demo",
+    "versionCode": 1010000,
+    "versionName": "1.1.0",
+    "icon": "$media:app_icon",
+    "label": "$string:app_name"
+  }
+}
+```
 
 ## 三、常见问题与避坑指南
 

@@ -1,51 +1,194 @@
 # Application Compliance and Privacy Policy Explained
 
-During the HarmonyOS Next app publishing process, compliance and privacy policy are top priorities for review. This article details compliance requirements, privacy policy writing tips, correct dynamic permission requests, common issues, and official resources to help developers pass the review smoothly.
+Compliance and privacy policies are critical during the HarmonyOS Next app review process. This article details compliance requirements, key points for privacy policy drafting, best practices for dynamic permission requests, common issues, and official references to help developers pass review smoothly.
 
-## 1. Application Compliance Requirements
+## 1. App Compliance Requirements
 
-1. [**User Agreement and Privacy Policy**](https://developer.huawei.com/consumer/cn/doc/app/50129-07)
-   - You must write a user agreement and privacy policy for your app, complying with the Personal Information Protection Law, Cybersecurity Law, and other relevant regulations.
-   - The privacy policy must be a standalone page, easily accessible within the app (e.g., settings, first launch pop-up).
+1. **User Agreement and Privacy Policy**
+   - Must create user agreements and privacy policies compliant with laws like the *Personal Information Protection Law* and *Cybersecurity Law*.
+   - Privacy policies should be standalone pages with easy access (e.g., settings page, first-launch popup).
+
+   Implementation example for privacy policy popup:
+```typescript
+import { IntentUtil, Log } from 'common_utils';
+import { loginComponentManager } from '@kit.AccountKit';
+import { curves } from '@kit.ArkUI';
+import { ResColor } from '../res/ResColor';
+
+const TAG = 'PrivacyCheckbox';
+
+@ComponentV2
+export struct PrivacyCheckbox {
+  // Agreement content
+  @Param texts: loginComponentManager.PrivacyText[] = [];
+  // Agreement checkbox status
+  @Param isCheckboxSelected: boolean = false;
+  @Event boxChange: (select: boolean) => void;
+  // Triggers unselected animation
+  @Param unselectAnimalCount: number = 0;
+  // Custom click handling
+  @Event onCustomItemClick?: (item: loginComponentManager.PrivacyText) => void;
+  // Animation
+  @Local translateX: number = 0;
+
+  build() {
+    Row() {
+      Row() {
+        Checkbox({ name: 'privacyCheckbox', group: 'privacyCheckboxGroup' })
+          .width(24)
+          .height(24)
+          .focusable(true)
+          .focusOnTouch(true)
+          .selectedColor(ResColor.themeLight())
+          .margin({ top: 0 })
+          .select(this.isCheckboxSelected)
+          .unselectedColor(this.translateX === 0 ? Color.Gray : Color.Red)
+          .translate({ x: this.translateX })
+          .animation({ curve: curves.springMotion() })
+          .onChange((value: boolean) => {
+            this.boxChange(value);
+            Log.d(TAG, () => `agreementChecked: ${value}`);
+          })
+      }
+
+      Row() {
+        Text() {
+          ForEach(this.texts, (item: loginComponentManager.PrivacyText, _index: number) => {
+            if (item?.type == loginComponentManager.TextType.PLAIN_TEXT && item?.text) {
+              Span(item?.text)
+                .fontColor(ResColor.desc())
+                .fontWeight(FontWeight.Regular)
+                .fontSize($r('sys.float.ohos_id_text_size_body3'))
+            } else if (item?.type == loginComponentManager.TextType.RICH_TEXT && item?.text) {
+              Span(item?.text)
+                .fontColor(ResColor.themeLight())
+                .fontWeight(FontWeight.Medium)
+                .fontSize($r('sys.float.ohos_id_text_size_body3'))
+                .focusable(true)
+                .focusOnTouch(true)
+                .onClick(() => {
+                  Log.d(TAG, () => `click privacy text tag: ${item.tag}`);
+                  if (this.onCustomItemClick !== undefined) {
+                    this.onCustomItemClick(item);
+                  } else if (item.tag) { // Implement page navigation based on item.tag
+                    IntentUtil.jumpUrl(item.tag)
+                  }
+                })
+            }
+          })
+        }
+      }
+      .layoutWeight(1)
+      .margin({ left: 12 })
+      .constraintSize({ minHeight: 24 })
+    }
+    .width('100%')
+    .alignItems(VerticalAlign.Top)
+    .justifyContent(FlexAlign.Start)
+  }
+
+  @Monitor('unselectAnimalCount')
+  checkAgreeAnimate() {
+    if (this.isCheckboxSelected) {
+      return;
+    }
+    let count = 10;
+    let t = 0;
+    const id = setInterval(() => {
+      count -= 1;
+      if (count === 0) {
+        clearInterval(id);
+        this.translateX = 1;
+        return;
+      }
+      t += 30;
+      this.translateX = 30 * Math.sin(t);
+    }, 100)
+  }
+}
+```
+
 2. **Dynamic Permission Requests**
-   - Only request permissions when necessary for a feature.
-   - Permission pop-ups must clearly state the purpose and usage scenario, e.g., "To enable the camera feature, we need access to your camera permission."
-   - Do not request all permissions at once; avoid "bundled authorization."
+   - Request permissions only when functionality requires them.
+   - Clearly explain usage purposes (e.g., "Camera access needed for photo features").
+
+```typescript
+// Request camera permission
+async function requestCameraPermission() {
+  let atManager = abilityAccessCtrl.createAtManager();
+  try {
+    let grantStatus = await atManager.checkAccessToken(abilityAccessCtrl.AtManager.PERMISSION_CAMERA);
+    if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {
+      return true;
+    }
+    // Request permission
+    let requestResult = await atManager.requestPermissionsFromUser(this.context, [abilityAccessCtrl.AtManager.PERMISSION_CAMERA]);
+    if (requestResult.authResults === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {
+      promptAction.showToast({ message: 'Camera permission granted' });
+      return true;
+    } else {
+      promptAction.showToast({ message: 'Camera permission denied' });
+      return false;
+    }
+  } catch (err) {
+    console.error(`Permission request failed: ${JSON.stringify(err)}`);
+    return false;
+  }
+}
+```
+- Avoid "bundled authorization" (requesting all permissions at once).
+
 3. **Payment and Data Security**
-   - Apps involving payments must integrate Huawei Pay SDK and pass PCI DSS and other security certifications.
-   - User data must be encrypted in storage and transmission; do not collect irrelevant personal information.
-4. **Third-party SDK Compliance**
-   - Check all integrated third-party SDKs for compliance and no malicious behavior, and disclose SDK usage in the privacy policy.
-   - When integrating third-party logins (e.g., WeChat), you must first integrate Huawei login.
+   - Payment features must integrate Huawei Pay SDK with PCI DSS certification.
+   - Encrypt user data during storage/transmission; prohibit collecting irrelevant personal information.
 
-## 2. Privacy Policy Writing Tips
+4. **Third-Party SDK Compliance**
+   - Ensure integrated SDKs are compliant and disclosed in privacy policies.
+   - When integrating third-party logins (e.g., WeChat), Huawei Login must be implemented first.
 
-- Clearly list what user information is collected, its purpose, storage method, and third-party sharing.
-- Explain how users can withdraw consent, delete data, or contact support.
-- Provide a privacy policy update mechanism and effective date.
-- Refer to the official template and adjust based on your business needs.
+## 2. Privacy Policy Essentials
 
-> **Tip**: Refer to the [Huawei Developer Alliance Privacy Policy Template](https://developer.huawei.com/consumer/cn/doc/development/AppGallery-connect-Guides/agcprivacy-0000001053628147) for writing.
+- Explicitly list collected data types, purposes, storage methods, and third-party sharing.
+- Describe user rights: consent withdrawal, data deletion, customer support.
+- Provide update mechanisms and effective dates.
+- Adapt official templates to your business needs.
 
-## 3. Dynamic Permission Request Practices
 
-- Request permissions via pop-up only when the user first uses the relevant feature; for non-essential permissions, denial should not affect core functionality.
-- Permission explanations must be specific and easy to understand; avoid vague statements.
-- Provide fallback or friendly prompts if permission is denied.
-- Update the privacy policy promptly when permissions change.
+## 3. Dynamic Permission Best Practices
 
-## 4. Common Issues and Tips
+- Request permissions during first use of related features.
+- Provide clear, understandable permission explanations.
+- Implement fallback solutions for denied permissions.
 
-- **Missing or Incomplete Privacy Policy**: This will likely cause review rejection.
-- **Unclear Permission Explanations**: Always specify the purpose in pop-ups; avoid vague statements like "access all your information."
-- **Undisclosed Third-party SDKs**: All SDK purposes and data flows must be explained in the privacy policy, including: usage purpose, scenario, collected permissions, and user info.
+```typescript
+// Fallback handling for denied permissions
+Button('Take Photo')
+  .onClick(async () => {
+    let hasPermission = await requestCameraPermission();
+    if (hasPermission) {
+      openCamera();
+    } else {
+      // Fallback: Open photo album
+      promptAction.showToast({ message: 'Opening photo album instead' });
+      setTimeout(() => openAlbum(), 1000);
+    }
+  })
+```
+- Update privacy policies when permission requirements change.
 
-## 5. Official Reference Links
+## 4. Common Issues and Solutions
 
-- [Huawei Developer Alliance Account Center](https://developer.huawei.com/consumer/cn/)
-- [Privacy Policy Compliance Guide](https://developer.huawei.com/consumer/cn/doc/app/50128)
-- [Review Policy](https://developer.huawei.com/consumer/cn/doc/app/50000)
+- **Missing/incomplete privacy policies**: Primary cause for rejection.
+- **Vague permission descriptions**: Avoid ambiguous phrases like "access all your information".
+- **Undisclosed third-party SDKs**: Disclose all SDK purposes, data flows, and collected information.
 
-## 6. Summary
+## 5. Official References
 
-Application compliance and privacy policy are core to HarmonyOS Next app review. Prepare compliance materials in advance, strictly follow official requirements for privacy policy display, and ensure dynamic permission requests are compliant and transparent. If in doubt, consult official docs or the community to ensure your app passes review and gains user trust. 
+- Huawei Developer Alliance
+- Privacy Compliance Guide
+- Review Policies
+
+## 6. Conclusion
+
+Compliance and privacy policies are fundamental to HarmonyOS Next app reviews. Prepare materials in advance, strictly follow official requirements, and ensure transparent permission handling. Consult official documentation or community forums when in doubt to ensure smooth approval and user trust.
+ 

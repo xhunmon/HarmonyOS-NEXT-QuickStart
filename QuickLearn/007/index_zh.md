@@ -68,7 +68,7 @@ HarmonyOS开发者认证目前分为三个等级，形成递进式能力评估�
 
 2. **核心备考资源**
    - 官方教材：《HarmonyOS应用开发实战》《HarmonyOS从入门到精通》
-   - 认证课程：开发者课堂的“认证备考系列”（https://developer.huawei.com/consumer/cn/training/course）
+   - 认证课程：开发者课堂的“认证备考系列”（https://developer.huawei.com/consumer/cn/training）
    - 模拟试题：认证平台提供的样题（需购买），第三方题库（如“鸿蒙开发者社区”）
    - 实操环境：DevEco Studio最新版+HarmonyOS NEXT模拟器
 
@@ -84,3 +84,75 @@ HarmonyOS开发者认证目前分为三个等级，形成递进式能力评估�
 
 ## 总结与展望
 HarmonyOS开发者认证不仅是技术能力的证明，更是进入鸿蒙生态的“通行证”。随着生态规模扩大，认证证书将成为企业招聘、项目合作的重要参考。未来，认证体系可能扩展到物联网、车机等更多领域，形成更细分的能力评估维度。开发者应结合职业规划选择合适认证等级，通过系统学习和实践提升技能，在鸿蒙生态中把握发展机遇。
+
+## 案例——游戏登录（ArkTS）
+通过案例学习了以下内容：https://developer.huawei.com/consumer/cn/codelabsPortal/carddetails/tutorials_NEXT-GameService-UnionLogin
+
+### 华为账号一键登录实现
+以下是基于Game Service Kit的华为账号一键登录核心代码：
+
+```typescript
+// GameApi.ets - 游戏登录API封装
+import gamePlayer from '@hms.core.gameservice.gameplayer';
+import promptAction from '@ohos.promptAction';
+
+export class GameApi {
+  // 联合登录
+  async unionLogin(): Promise<gamePlayer.UnionLoginResult> {
+    try {
+      const result = await gamePlayer.unionLogin();
+      if (result.resultCode === 0) {
+        promptAction.showToast({ message: '登录成功' });
+        return result;
+      } else {
+        promptAction.showToast({ message: `登录失败: ${result.resultCode}` });
+        throw new Error(`Login failed with code: ${result.resultCode}`);
+      }
+    } catch (error) {
+      console.error(`Union login error: ${JSON.stringify(error)}`);
+      throw error;
+    }
+  }
+
+  // 检查用户是否已存在
+  async checkUserExist(unionId: string): Promise<boolean> {
+    // 实际项目中应调用后端API检查用户
+    return new Promise(resolve => setTimeout(() => resolve(true), 500));
+  }
+}
+
+// Index.ets - 登录页面实现
+import { GameApi } from '../common/GameApi';
+
+@Entry
+@Component
+struct LoginPage {
+  private gameApi: GameApi = new GameApi();
+
+  build() {
+    Column() {
+      Button('华为账号一键登录')
+        .width(300)
+        .height(50)
+        .onClick(async () => {
+          try {
+            const loginResult = await this.gameApi.unionLogin();
+            const isExist = await this.gameApi.checkUserExist(loginResult.unionId);
+            if (isExist) {
+              // 老用户静默登录
+              router.pushUrl({ url: 'pages/MainPage' });
+            } else {
+              // 新用户引导注册
+              router.pushUrl({ url: 'pages/RegisterPage' });
+            }
+          } catch (error) {
+            console.error(`Login failed: ${error}`);
+          }
+        })
+    }
+    .width('100%')
+    .height('100%')
+    .justifyContent(FlexAlign.Center)
+  }
+}
+```

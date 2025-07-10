@@ -22,8 +22,75 @@ HarmonyOS Next 致力于实现"多端协同、无缝体验"，应用需要适配
    - 根据设备性能和功能分为基础型、标准型、增强型，合理分配功能和界面复杂度。
    - 通过代码判断设备类型，动态加载适配资源。
 5. [一次开发，多端部署](https://developer.huawei.com/consumer/cn/doc/best-practices/bpta-technical-key-points)
-   	- 官网提供了各种组件，以适配在手机、平板、电脑等不同设备的处理方案。
-   	- 参考官网给出的多种案例。
+    	- 官网提供了各种组件，以适配在手机、平板、电脑等不同设备的处理方案。
+    	- 参考官网给出的多种案例。
+
+    以下是响应式布局与设备检测的核心实现代码：
+    ```typescript
+    // BreakpointConstants.ets - 定义响应式断点
+    export const Breakpoints = {
+      XS: 320,
+      SM: 520,
+      MD: 800,
+      LG: 1080,
+      XL: 1440,
+      XXL: 1920
+    };
+
+    // ResponsiveLayout.ets - 响应式Grid布局实现
+    import { Breakpoints } from '../constants/BreakpointConstants';
+
+    @Component
+    struct MultiDeviceLayout {
+      @State currentBreakpoint: string = 'XS';
+
+      private getColumnsByBreakpoint(width: number): number {
+        if (width >= Breakpoints.XXL) return 4;
+        if (width >= Breakpoints.XL) return 3;
+        if (width >= Breakpoints.LG) return 2;
+        return 1; // 默认单列
+      }
+
+      build() {
+        Column() {
+          GridRow() {
+            GridCol({ span: { xs: 12, sm: 6, md: 4, lg: 3 } }) {
+              Text('Item 1').height(100).backgroundColor('#f0f0f0').textAlign(TextAlign.Center)
+            }
+            GridCol({ span: { xs: 12, sm: 6, md: 4, lg: 3 } }) {
+              Text('Item 2').height(100).backgroundColor('#e0e0e0').textAlign(TextAlign.Center)
+            }
+            // 更多GridCol子组件...
+          }
+          .columnsGap(16)
+          .rowsGap(16)
+          .padding(16)
+        }
+        .onWindowSizeChange((size) => {
+          this.currentBreakpoint = this.getBreakpointName(size.width);
+        })
+      }
+    }
+
+    // DeviceDetection.ets - 设备类型检测
+    import deviceInfo from '@ohos.deviceInfo';
+
+    export function getDeviceType(): string {
+      switch (deviceInfo.deviceType) {
+        case 'phone':
+          return '手机';
+        case 'tablet':
+          return '平板';
+        case 'tv':
+          return '智慧屏';
+        case 'wearable':
+          return '智能穿戴';
+        default:
+          return '其他设备';
+      }
+    }
+    ```
+    - **实现说明**：通过断点常量定义不同屏幕尺寸阈值，结合GridRow/GridCol组件实现响应式布局，使用deviceInfo API检测设备类型并动态调整功能。
 
 ## 三、响应式布局方法
 
