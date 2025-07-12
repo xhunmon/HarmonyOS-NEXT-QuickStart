@@ -1,4 +1,4 @@
-# Multi-Device Adaptation and Responsive Design Practice Guide
+# Multi-Device Adaptation and Responsive Design Best Practices
 
 HarmonyOS Next is committed to achieving "multi-device collaboration and seamless experience". Applications need to adapt to various device forms such as mobile phones, tablets, watches, and car devices. This article will detail the principles of multi-device adaptation, responsive layout methods, device capability classification, common issues, and official reference resources to help developers create high-quality cross-device application experiences.
 

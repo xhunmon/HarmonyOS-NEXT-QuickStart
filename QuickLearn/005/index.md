@@ -1,4 +1,4 @@
-# Multi-Device Adaptation in HarmonyOS
+# HarmonyOS Learning: Multi-device Adaptation for Phones, iPads, PCs, and Foldables
 
 ## Introduction
 As the HarmonyOS ecosystem continues to expand, applications need to adapt to diverse device forms including phones, tablets, PCs, and foldable screens. Multi-device adaptation is crucial for enhancing user experience and represents the core capability of HarmonyOS distributed systems. This article details official adaptation solutions and practical techniques to help developers build consistent cross-device application experiences.

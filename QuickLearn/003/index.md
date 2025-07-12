@@ -1,4 +1,4 @@
-# OHPM Package Manager and Third-Party Library Integration
+# HarmonyOS Learning: Third-Party Open Source Libraries
 
 ## Introduction
 In HarmonyOS application development, leveraging third-party open source libraries can significantly enhance development efficiency and reduce repetitive work. OpenHarmony Package Manager (OHPM), as the official package management tool, provides developers with abundant third-party library resources covering various functional modules from UI components to business logic processing.

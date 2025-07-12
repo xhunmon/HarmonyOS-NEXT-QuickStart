@@ -1,4 +1,4 @@
-# Obtaining and Configuring Signature Files for HarmonyOS Next Applications
+# Complete Guide to Obtaining and Configuring Signing Files
 
 Signature files are critical for ensuring the security and legitimacy of HarmonyOS Next applications. They serve as digital credentials that verify the developer's identity and ensure the application has not been tampered with during distribution. This guide details the purpose of signature files, the application process via AppGallery Connect, configuration steps in project files, and best practices for management.
 

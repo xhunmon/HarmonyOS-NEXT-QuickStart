@@ -1,4 +1,4 @@
-# Creating Applications in AppGallery Connect for HarmonyOS Next
+# Complete Guide to Creating an App in AppGallery Connect
 
 AppGallery Connect (AGC) is Huawei's one-stop platform for application development, distribution, and operation. Creating and configuring your HarmonyOS Next application in AGC is a critical step before publishing to the HarmonyOS Gallery. This guide walks through the complete process of creating an application in AGC, configuring project files, filling in application information, and linking your development project, ensuring a smooth transition from development to release.
 

@@ -1,4 +1,4 @@
-# Comprehensive Guide to Functional Testing and Real Device Debugging
+# Complete Guide to Functional Testing and Real Device Debugging
 
 Before publishing your HarmonyOS Next application, thorough functional testing and real-device debugging are crucial for ensuring quality and passing review. This guide details the testing process, debugging methods, common issues, and official resources to help developers efficiently identify and resolve problems.
 

@@ -1,4 +1,4 @@
-# HarmonyOS Next Application Review and Release Process
+# Complete Guide to Review, Release, and Common Issues
 
 
 After uploading the package and qualification materials, HarmonyOS Next applications enter the review and publication phase on AppGallery Connect (AGC). Only after passing the review can the application be officially launched. This article details the review process, publication considerations, common rejection reasons, troubleshooting strategies, and official resources to help developers complete the final step of publication.

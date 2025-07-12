@@ -1,4 +1,4 @@
-# DevEco Studio User Guide
+# HarmonyOS Learning: DevEco Studio User Guide
 
 ## Introduction
 DevEco Studio is an integrated development environment (IDE) launched by Huawei for HarmonyOS application development, providing developers with a one-stop application development solution. Mastering DevEco Studio is crucial for efficient HarmonyOS application development.

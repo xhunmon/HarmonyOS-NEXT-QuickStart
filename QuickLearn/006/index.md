@@ -1,4 +1,4 @@
-# HarmonyOS Developer Training Platform & ArkTS Fundamentals
+# HarmonyOS Learning: Developer Classroom
 
 ## Introduction
 Developer Classroom is a systematic learning platform created by Huawei for HarmonyOS developers, integrating diverse learning resources such as video courses, live session replays, and documentation tutorials. Whether you are a beginner or an advanced developer, you can acquire authoritative and cutting-edge technical knowledge through Developer Classroom to rapidly enhance your HarmonyOS application development capabilities.

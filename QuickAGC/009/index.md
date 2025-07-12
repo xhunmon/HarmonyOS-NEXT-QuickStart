@@ -1,4 +1,4 @@
-# Uploading Application Packages and Qualification Materials for HarmonyOS Next
+# Complete Guide to Uploading Packages and Qualification Materials
 
 After successfully creating an application on AppGallery Connect (AGC), developers need to upload the application installation package (.app file) and relevant qualification materials. Standardized and complete uploads are crucial for smooth review and successful publication. This guide details the package upload process, qualification material preparation, common issues, and official resources to help developers efficiently complete publication preparations.
 

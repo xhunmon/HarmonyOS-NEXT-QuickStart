@@ -1,4 +1,4 @@
-# HarmonyOS Certification System and Game Service Integration
+# HarmonyOS Learning: Developer Certification
 
 ## Introduction
 HarmonyOS Developer Certification is an official technical competency assessment system launched by Huawei, designed to validate developers' professional expertise in HarmonyOS application development. Obtaining certification not only provides authoritative skill endorsement but also enhances career competitiveness and unlocks more business opportunities. This article details the certification system, exam content, and preparation strategies to help developers efficiently plan their certification path.
